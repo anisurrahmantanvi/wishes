@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="bn">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Wishes — প্রিয় মানুষের জন্য সারপ্রাইজ letter</title>
+  <meta name="description" content="প্রিয় মানুষের জন্য সুন্দর animation-সহ wishes letter লিখুন, লিংক ও QR কোড বানিয়ে শেয়ার করুন।">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="wrap">
+    <header class="top">
+      <a class="logo" href="index.html">💌 Wishes</a>
+      <a class="btn" href="create.html">Letter লিখুন</a>
+    </header>
+
+    <section class="hero">
+      <h1>ভালোবাসার মানুষের জন্য<br>একটা সারপ্রাইজ letter 💌</h1>
+      <p>টেমপ্লেট বেছে নিন, মনের কথা লিখুন, লিংক বা QR কোড পাঠান। যিনি খুলবেন, তিনি দেখবেন সুন্দর animation-এর মধ্যে আপনার letter একটা একটা শব্দ করে ফুটে উঠছে।</p>
+      <a class="btn" href="create.html">এখনই শুরু করুন</a>
+    </section>
+
+    <section>
+      <h2 class="section-title">টেমপ্লেট</h2>
+      <div class="grid" id="tplGrid"></div>
+    </section>
+
+    <section class="steps">
+      <h2>কীভাবে কাজ করে</h2>
+      <div class="grid">
+        <div class="card"><b>১. টেমপ্লেট বাছুন</b><p class="note">জন্মদিন, anniversary বা শুধু ভালোবাসার জন্য।</p></div>
+        <div class="card"><b>২. letter লিখুন</b><p class="note">নাম, মেসেজ আর চাইলে unlock তারিখ দিন।</p></div>
+        <div class="card"><b>৩. লিংক ও QR নিন</b><p class="note">কপি করুন, অথবা QR কার্ড ডাউনলোড করুন।</p></div>
+        <div class="card"><b>৪. সারপ্রাইজ!</b><p class="note">স্ক্যান করলে envelope খুলে letter ফুটে উঠবে।</p></div>
+      </div>
+    </section>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/common.js"></script>
+  <script>
+    const grid = document.getElementById("tplGrid");
+    Object.entries(TEMPLATES).forEach(([key, t]) => {
+      const a = document.createElement("a");
+      a.href = "create.html?t=" + key;
+      a.className = "card tpl";
+      a.style.textDecoration = "none";
+      a.style.color = "#fff";
+      a.innerHTML = `<div class="sw" style="background:linear-gradient(160deg,${t.bg[0]},${t.bg[1]})">${t.emoji}</div><b>${t.name}</b>`;
+      grid.appendChild(a);
+    });
+  </script>
+</body>
+</html>

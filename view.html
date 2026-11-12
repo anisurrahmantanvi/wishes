@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="bn">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>আপনার জন্য একটা letter 💌</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="stage">
+    <canvas id="bg"></canvas>
+
+    <div class="center" id="intro">
+      <div class="envelope" id="env" role="button" tabindex="0" aria-label="Letter খুলুন">
+        <div class="flap"></div>
+        <div class="seal">💌</div>
+      </div>
+      <p class="hint" id="hint">ট্যাপ করে খুলুন</p>
+      <p class="locked" id="locked"></p>
+    </div>
+
+    <article class="letter" id="letter">
+      <button class="skip" id="skip" type="button">সব দেখান</button>
+      <div class="to" id="to"></div>
+      <div class="body cursor" id="body"></div>
+      <div class="from" id="from"></div>
+    </article>
+
+    <div class="footer-cta" id="cta" style="position:absolute;bottom:16px;left:0;right:0;z-index:3">
+      <a class="btn ghost" href="create.html">নিজের letter বানান 💌</a>
+    </div>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/view.js"></script>
+</body>
+</html>

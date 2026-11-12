@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="bn">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Letter লিখুন — Wishes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="wrap">
+    <header class="top">
+      <a class="logo" href="index.html">💌 Wishes</a>
+    </header>
+
+    <h2 class="section-title">১. টেমপ্লেট বাছুন</h2>
+    <div class="grid" id="tplGrid"></div>
+
+    <h2 class="section-title" style="margin-top:28px">২. Letter লিখুন</h2>
+    <form class="form card" id="form" autocomplete="off">
+      <div class="row">
+        <label>যার জন্য (নাম)
+          <input id="to" maxlength="40" placeholder="যেমন: আমার প্রিয় মানুষ" required>
+        </label>
+        <label>আপনার নাম
+          <input id="from" maxlength="40" placeholder="যেমন: তোমার আমি" required>
+        </label>
+      </div>
+      <label>মেসেজ
+        <textarea id="msg" placeholder="মনের কথা লিখুন..." required></textarea>
+        <span class="counter"><span id="count">0</span> / <span id="max"></span></span>
+      </label>
+      <label>কবে খুলবে (ঐচ্ছিক)
+        <input type="datetime-local" id="unlock">
+        <span class="note">এই সময়ের আগে envelope খুলবে না। লিংক ডাটাবেস ছাড়া চললে এটা সম্পূর্ণ নিরাপদ lock নয়, কেউ চাইলে লিংক ঘেঁটে লেখা পড়ে ফেলতে পারে।</span>
+      </label>
+      <div class="actions">
+        <button type="button" class="btn ghost" id="previewBtn">Preview দেখুন</button>
+        <button type="submit" class="btn" id="genBtn">লিংক ও QR বানান</button>
+      </div>
+      <p class="note" id="err" style="color:#ffb3b3"></p>
+    </form>
+
+    <div class="result card" id="result">
+      <h3>আপনার letter তৈরি! 🎉</h3>
+      <div class="linkbox">
+        <input id="link" readonly>
+        <button class="btn" id="copyBtn" type="button">কপি</button>
+      </div>
+      <img id="qr" alt="QR কোড">
+      <div class="actions" style="margin-top:14px">
+        <a class="btn ghost" id="openBtn" target="_blank" rel="noopener">খুলে দেখুন</a>
+        <button class="btn" id="dlBtn" type="button">QR কার্ড ডাউনলোড</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/create.js"></script>
+</body>
+</html>
