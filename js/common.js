@@ -138,51 +138,139 @@ function applyTheme(key) {
   return t;
 }
 
-/* ---------- ব্যাকগ্রাউন্ড অ্যানিমেশন (canvas) ---------- */
+/* ---------- ব্যাকগ্রাউন্ড অ্যানিমেশন: Galaxy + Love (canvas) ---------- */
+function hexA(hex, a) {
+  const n = parseInt(hex.replace("#", ""), 16);
+  return `rgba(${(n >> 16) & 255},${(n >> 8) & 255},${n & 255},${a})`;
+}
+
 function startBackground(canvas, key) {
   const t = TEMPLATES[key] || TEMPLATES.rose;
   const ctx = canvas.getContext("2d");
   const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const lowEnd = (navigator.hardwareConcurrency || 4) <= 4;
-  const COUNT = reduce ? 0 : lowEnd ? 18 : 34;
-  let w = 0, h = 0, raf = 0, items = [];
+  let w = 0, h = 0, raf = 0, stars = [], hearts = [], shoot = null, nebula = null;
+  let nextShoot = 2500;
+
+  // glow-সহ হার্টের sprite একবারই আঁকা হয়, তাই ফ্রেমে খরচ কম
+  function makeHeart(color) {
+    const s = 64, c = document.createElement("canvas");
+    c.width = c.height = s;
+    const g = c.getContext("2d");
+    const glow = g.createRadialGradient(s / 2, s / 2, 2, s / 2, s / 2, s / 2);
+    glow.addColorStop(0, hexA(color, 0.55));
+    glow.addColorStop(1, hexA(color, 0));
+    g.fillStyle = glow; g.fillRect(0, 0, s, s);
+    const x = s / 2, y = s / 2 + 4, r = 11;
+    g.fillStyle = color;
+    g.beginPath();
+    g.moveTo(x, y + r * 1.1);
+    g.bezierCurveTo(x - r * 2, y - r * 0.2, x - r * 1.2, y - r * 1.6, x, y - r * 0.6);
+    g.bezierCurveTo(x + r * 1.2, y - r * 1.6, x + r * 2, y - r * 0.2, x, y + r * 1.1);
+    g.fill();
+    return c;
+  }
+  const heartSprite = makeHeart(t.accent);
+
+  // nebula (মহাকাশের রঙিন মেঘ) একবার আঁকা হয়
+  function buildNebula() {
+    const c = document.createElement("canvas");
+    c.width = w; c.height = h;
+    const g = c.getContext("2d");
+    const base = g.createLinearGradient(0, 0, w, h);
+    base.addColorStop(0, "#02030c");
+    base.addColorStop(1, hexA(t.bg[0], 1));
+    g.fillStyle = base; g.fillRect(0, 0, w, h);
+    const m = Math.max(w, h);
+    [[0.2, 0.25, 0.7, t.bg[1], 0.55], [0.85, 0.7, 0.6, t.accent, 0.22], [0.5, 0.95, 0.55, t.bg[1], 0.35]]
+      .forEach(([cx, cy, rr, col, al]) => {
+        const rg = g.createRadialGradient(cx * w, cy * h, 0, cx * w, cy * h, rr * m);
+        rg.addColorStop(0, hexA(col, al));
+        rg.addColorStop(1, hexA(col, 0));
+        g.fillStyle = rg; g.fillRect(0, 0, w, h);
+      });
+    return c;
+  }
+
+  function initScene() {
+    const sc = lowEnd ? 70 : 140, hc = lowEnd ? 8 : 14;
+    stars = Array.from({ length: sc }, () => {
+      const r = 0.4 + Math.random() * 1.3;
+      return {
+        x: Math.random() * w, y: Math.random() * h, r,
+        tw: Math.random() * 6.28, sp: 0.6 + Math.random() * 1.8,
+        v: 0.01 + r * 0.025, warm: Math.random() < 0.15
+      };
+    });
+    hearts = Array.from({ length: hc }, () => newHeart(true));
+  }
+  function newHeart(initial) {
+    return {
+      x: Math.random() * w, y: initial ? Math.random() * h : h + 40,
+      s: 14 + Math.random() * 20, v: 0.15 + Math.random() * 0.4,
+      sw: Math.random() * 6.28, amp: 8 + Math.random() * 18,
+      a: 0.35 + Math.random() * 0.5
+    };
+  }
 
   function resize() {
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     w = canvas.clientWidth; h = canvas.clientHeight;
     canvas.width = w * dpr; canvas.height = h * dpr;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    nebula = buildNebula();
+    initScene();
+    if (reduce) draw(0);
   }
-  function spawn(initial) {
-    return {
-      x: Math.random() * w,
-      y: initial ? Math.random() * h : h + 30,
-      s: 12 + Math.random() * 22,
-      v: 0.3 + Math.random() * 0.9,
-      sway: Math.random() * Math.PI * 2,
-      amp: 10 + Math.random() * 25,
-      a: 0.25 + Math.random() * 0.55,
-      ch: t.particles[Math.floor(Math.random() * t.particles.length)]
-    };
-  }
-  function frame() {
+
+  function draw(ts) {
     ctx.clearRect(0, 0, w, h);
-    for (const p of items) {
-      p.y -= p.v;
-      p.sway += 0.012;
-      const x = p.x + Math.sin(p.sway) * p.amp;
+    ctx.drawImage(nebula, 0, 0, w, h);
+    const time = ts / 1000;
+
+    for (const s of stars) {
+      s.y += s.v; s.x -= s.v * 0.4;
+      if (s.y > h) { s.y = -2; s.x = Math.random() * w; }
+      if (s.x < 0) s.x = w;
+      const a = 0.35 + 0.65 * (0.5 + 0.5 * Math.sin(time * s.sp + s.tw));
+      ctx.globalAlpha = a;
+      ctx.fillStyle = s.warm ? t.accent : "#ffffff";
+      ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, 6.2832); ctx.fill();
+    }
+
+    for (const p of hearts) {
+      p.y -= p.v; p.sw += 0.01;
+      const x = p.x + Math.sin(p.sw) * p.amp;
       ctx.globalAlpha = p.a;
-      ctx.font = p.s + "px serif";
-      ctx.fillText(p.ch, x, p.y);
-      if (p.y < -40) Object.assign(p, spawn(false));
+      ctx.drawImage(heartSprite, x - p.s, p.y - p.s, p.s * 2, p.s * 2);
+      if (p.y < -50) Object.assign(p, newHeart(false));
+    }
+
+    // মাঝেমধ্যে shooting star
+    if (!reduce) {
+      if (!shoot && ts > nextShoot) {
+        shoot = { x: w * (0.4 + Math.random() * 0.6), y: Math.random() * h * 0.35, vx: -(7 + Math.random() * 4), vy: 3 + Math.random() * 2, life: 1 };
+      }
+      if (shoot) {
+        const x2 = shoot.x - shoot.vx * 7, y2 = shoot.y - shoot.vy * 7;
+        const g = ctx.createLinearGradient(shoot.x, shoot.y, x2, y2);
+        g.addColorStop(0, "rgba(255,255,255," + shoot.life + ")");
+        g.addColorStop(1, "rgba(255,255,255,0)");
+        ctx.globalAlpha = 1;
+        ctx.strokeStyle = g; ctx.lineWidth = 1.6;
+        ctx.beginPath(); ctx.moveTo(shoot.x, shoot.y); ctx.lineTo(x2, y2); ctx.stroke();
+        shoot.x += shoot.vx; shoot.y += shoot.vy; shoot.life -= 0.012;
+        if (shoot.life <= 0) { shoot = null; nextShoot = ts + 3000 + Math.random() * 4000; }
+      }
     }
     ctx.globalAlpha = 1;
-    raf = requestAnimationFrame(frame);
   }
+
+  function loop(ts) { draw(ts); raf = requestAnimationFrame(loop); }
+
   resize();
-  items = Array.from({ length: COUNT }, () => spawn(true));
   window.addEventListener("resize", resize);
-  if (COUNT) frame();
+  if (!reduce) raf = requestAnimationFrame(loop);
   return () => { cancelAnimationFrame(raf); window.removeEventListener("resize", resize); };
 }
 

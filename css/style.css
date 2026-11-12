@@ -67,9 +67,9 @@ input::placeholder, textarea::placeholder { color: rgba(255,255,255,.45); }
 .center { position: relative; z-index: 2; text-align: center; width: 100%; max-width: 520px; }
 
 .envelope {
-  width: min(300px, 80vw); height: 200px; margin: 0 auto; position: relative; cursor: pointer;
+  width: min(180px, 52vw); height: 120px; margin: 0 auto; position: relative; cursor: pointer;
   background: linear-gradient(160deg, #f7d6df, #e9a9bb); border-radius: 10px;
-  box-shadow: 0 20px 50px rgba(0,0,0,.45);
+  box-shadow: 0 12px 30px rgba(0,0,0,.45), 0 0 24px rgba(255,255,255,.12);
   animation: float 3s ease-in-out infinite;
 }
 .envelope .flap {
@@ -80,8 +80,8 @@ input::placeholder, textarea::placeholder { color: rgba(255,255,255,.45); }
 }
 .envelope .seal {
   position: absolute; left: 50%; top: 46%; transform: translate(-50%, -50%);
-  width: 52px; height: 52px; border-radius: 50%; z-index: 4; display: grid; place-items: center;
-  font-size: 1.5rem; background: radial-gradient(circle at 30% 30%, #ff6b8e, #b0124f);
+  width: 32px; height: 32px; border-radius: 50%; z-index: 4; display: grid; place-items: center;
+  font-size: .9rem; background: radial-gradient(circle at 30% 30%, #ff6b8e, #b0124f);
   box-shadow: 0 4px 12px rgba(0,0,0,.4); transition: opacity .3s, transform .3s;
 }
 .envelope.open { animation: none; }
