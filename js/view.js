@@ -1,6 +1,7 @@
 (async function () {
   const $ = (id) => document.getElementById(id);
   let data;
+  const letterId = new URLSearchParams(location.hash.replace(/^#/, "")).get("id");
 
   try {
     data = await loadLetter();
@@ -15,6 +16,16 @@
   startBackground($("bg"), key);
   $("lblTo").textContent = "To: " + data.to;
   $("lblFrom").textContent = "From: " + data.from;
+
+  if (letterId && supabaseReady()) {
+    $("reportBtn").style.display = "inline";
+    $("reportBtn").onclick = async () => {
+      if (!confirm("এই letter আপত্তিকর মনে হলে রিপোর্ট করুন। চালিয়ে যাবেন?")) return;
+      try { await reportLetter(letterId, "reported from view page"); alert("ধন্যবাদ, রিপোর্ট জমা হয়েছে।"); }
+      catch (e) { alert("রিপোর্ট পাঠানো যায়নি, একটু পরে আবার চেষ্টা করুন।"); }
+    };
+  }
+  const photoList = Array.isArray(data.photos) ? data.photos.map(photoUrl).filter(Boolean).slice(0, 6) : [];
 
   const isPreview = /(^|&)preview=1/.test(location.hash.replace(/^#/, ""));
   let opened = false;
@@ -62,6 +73,7 @@
     $("env").classList.add("open");
     $("hint").style.display = "none";
     burst();
+    photoList.forEach((u) => { const im = new Image(); im.src = u; }); // আগে থেকে লোড
     // flap উল্টায় -> letter উঠে আসে -> envelope মিলিয়ে যায় -> পুরো letter ফোটে
     setTimeout(() => $("intro").classList.add("fade"), 1900);
     setTimeout(() => {
@@ -89,11 +101,31 @@
     step();
     $("skip").onclick = () => { clearTimeout(timer); body.textContent = data.msg; finish(); };
   }
+  let galleryShown = false;
+  function showGallery() {
+    if (galleryShown || !photoList.length) return;
+    galleryShown = true;
+    const g = $("gallery");
+    photoList.forEach((u, i) => {
+      const fig = document.createElement("figure");
+      fig.className = "polaroid";
+      fig.style.setProperty("--r", (Math.random() * 6 - 3).toFixed(1) + "deg");
+      fig.style.setProperty("--d", i * 0.35 + "s");
+      const im = document.createElement("img");
+      im.src = u; im.alt = "ছবি " + (i + 1); im.loading = "lazy";
+      fig.appendChild(im);
+      fig.onclick = () => { $("lb").querySelector("img").src = u; $("lb").classList.add("show"); };
+      g.appendChild(fig);
+    });
+    $("lb").onclick = () => $("lb").classList.remove("show");
+    setTimeout(() => $("letter").scrollTo({ top: $("letter").scrollHeight, behavior: "smooth" }), 400);
+  }
   function finish() {
     $("body").classList.remove("cursor");
     $("skip").style.display = "none";
     $("from").textContent = "— " + data.from;
     $("from").classList.add("show");
+    showGallery();
     setTimeout(() => $("cta").classList.add("show"), 800);
   }
 

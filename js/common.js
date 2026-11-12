@@ -23,7 +23,7 @@ const TEMPLATES = {
   }
 };
 
-const CFG = window.WISHES_CONFIG || { firebase: {}, maxChars: 1200 };
+const CFG = window.WISHES_CONFIG || { supabase: {}, maxChars: 1200, maxPhotos: 6 };
 
 /* ---------- base64url ---------- */
 function toB64Url(bytes) {
@@ -67,54 +67,101 @@ async function unpack(s) {
   return JSON.parse(new TextDecoder().decode(bytes));
 }
 
-/* ---------- সেভ / লোড ---------- */
-function firebaseReady() {
-  const f = CFG.firebase || {};
-  return !!(f.projectId && f.apiKey);
+/* ---------- Supabase সেভ / লোড ---------- */
+const SB = CFG.supabase || {};
+function supabaseReady() { return !!(SB.url && SB.key); }
+function sbHeaders(extra) { return Object.assign({ apikey: SB.key }, extra || {}); }
+
+async function sbRpc(fn, args) {
+  const res = await fetch(SB.url + "/rest/v1/rpc/" + fn, {
+    method: "POST",
+    headers: sbHeaders({ "Content-Type": "application/json" }),
+    body: JSON.stringify(args)
+  });
+  if (!res.ok) throw new Error("সার্ভারে সমস্যা (" + res.status + ")");
+  const text = await res.text();
+  return text ? JSON.parse(text) : null;
 }
-function fsUrl(id) {
-  const f = CFG.firebase;
-  const base = `https://firestore.googleapis.com/v1/projects/${f.projectId}/databases/(default)/documents/letters`;
-  return id ? `${base}/${id}?key=${f.apiKey}` : base;
-}
-function randomId(n = 8) {
-  const chars = "abcdefghijkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-  const a = new Uint32Array(n);
-  crypto.getRandomValues(a);
-  return Array.from(a, (x) => chars[x % chars.length]).join("");
-}
+
 function viewBase() {
   return new URL("view.html", location.href).href.split("#")[0].split("?")[0];
 }
 
+const PHOTO_RE = /^[0-9a-f-]{36}\/[0-9]\.jpg$/;
+// letter-এর ডাটা অবিশ্বস্ত, তাই শুধু নির্দিষ্ট ছাঁচের পাথ থেকে নিজের bucket-এর URL বানাই
+function photoUrl(path) {
+  if (!supabaseReady() || typeof path !== "string" || !PHOTO_RE.test(path)) return "";
+  return SB.url + "/storage/v1/object/public/letter-photos/" + path;
+}
+
+// ছবি ব্রাউজারেই ছোট করে JPEG বানায় (স্টোরেজ ও ডেটা বাঁচাতে)
+async function compressImage(file) {
+  let bmp;
+  try { bmp = await createImageBitmap(file, { imageOrientation: "from-image" }); }
+  catch (e) { bmp = await createImageBitmap(file); }
+  const scale = Math.min(1, 1280 / Math.max(bmp.width, bmp.height));
+  const c = document.createElement("canvas");
+  c.width = Math.round(bmp.width * scale);
+  c.height = Math.round(bmp.height * scale);
+  c.getContext("2d").drawImage(bmp, 0, 0, c.width, c.height);
+  if (bmp.close) bmp.close();
+  const toBlob = (q) => new Promise((res, rej) =>
+    c.toBlob((b) => (b ? res(b) : rej(new Error("ছবি প্রক্রিয়া করা যায়নি"))), "image/jpeg", q));
+  let blob = await toBlob(0.78);
+  if (blob.size > 1000000) blob = await toBlob(0.55);
+  if (blob.size > 1048576) throw new Error("ছবিটা অনেক বড়");
+  return blob;
+}
+
+async function uploadPhoto(blob, path) {
+  const res = await fetch(SB.url + "/storage/v1/object/letter-photos/" + path, {
+    method: "POST",
+    headers: sbHeaders({ "Content-Type": "image/jpeg", "x-upsert": "false" }),
+    body: blob
+  });
+  if (!res.ok) throw new Error("ছবি আপলোড ব্যর্থ (" + res.status + ")");
+}
+
 // letter সেভ করে শেয়ার করার লিংক ফেরত দেয়
-async function saveLetter(data) {
-  if (firebaseReady()) {
-    const id = randomId();
-    const res = await fetch(fsUrl() + `?documentId=${id}&key=${CFG.firebase.apiKey}`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ fields: { data: { stringValue: JSON.stringify(data) } } })
-    });
-    if (!res.ok) throw new Error("Firestore সেভ ব্যর্থ (" + res.status + ")");
+async function saveLetter(data, blobs, onProgress) {
+  blobs = blobs || [];
+  if (supabaseReady()) {
+    const photos = [];
+    if (blobs.length) {
+      const folder = crypto.randomUUID();
+      for (let i = 0; i < blobs.length; i++) {
+        const path = folder + "/" + (i + 1) + ".jpg";
+        if (onProgress) onProgress(i + 1, blobs.length);
+        await uploadPhoto(blobs[i], path);
+        photos.push(path);
+      }
+    }
+    const payload = Object.assign({}, data);
+    if (photos.length) payload.photos = photos;
+    const id = await sbRpc("create_letter", { p_data: payload });
     return viewBase() + "#id=" + id;
   }
+  if (blobs.length) throw new Error("ছবি যোগ করতে ডাটাবেস চালু থাকতে হবে");
   return viewBase() + "#d=" + (await pack(data));
 }
 
 // view.html-এর hash থেকে letter লোড করে
 async function loadLetter() {
-  const h = location.hash.replace(/^#/, "");
-  const params = new URLSearchParams(h);
-  if (params.get("id")) {
-    if (!firebaseReady()) throw new Error("Firebase কনফিগ করা নেই");
-    const res = await fetch(fsUrl(params.get("id")));
-    if (!res.ok) throw new Error("Letter পাওয়া যায়নি");
-    const doc = await res.json();
-    return JSON.parse(doc.fields.data.stringValue);
+  const params = new URLSearchParams(location.hash.replace(/^#/, ""));
+  const id = params.get("id");
+  if (id) {
+    if (!supabaseReady()) throw new Error("ডাটাবেস কনফিগ করা নেই");
+    if (!/^[0-9a-f]{10}$/.test(id)) throw new Error("লিংকটা সঠিক নয়");
+    const d = await sbRpc("get_letter", { p_id: id });
+    if (!d) throw new Error("Letter পাওয়া যায়নি");
+    return d;
   }
   if (params.get("d")) return unpack(params.get("d"));
   throw new Error("লিংকে কোনো letter নেই");
+}
+
+function reportLetter(id, reason) {
+  return sbRpc("report_letter", { p_id: id, p_reason: reason || null });
 }
 
 /* ---------- QR (qrcode-generator লাইব্রেরি CDN থেকে লোড হয়) ---------- */

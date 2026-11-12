@@ -31,6 +31,13 @@
         <textarea id="msg" placeholder="মনের কথা লিখুন..." required></textarea>
         <span class="counter"><span id="count">0</span> / <span id="max"></span></span>
       </label>
+      <div id="photoField">
+        <label>ছবি (ঐচ্ছিক, সর্বোচ্চ ৬টা)
+          <input type="file" id="photos" accept="image/*" multiple>
+        </label>
+        <p class="note">ছবি ছোট করে আপলোড হবে এবং letter-এর শেষে সুন্দর করে দেখানো হবে। যার কাছে লিংক যাবে, সে-ই ছবি দেখতে পাবে, তাই শুধু সেই ছবি দিন যেটা শেয়ার করতে স্বস্তি বোধ করেন।</p>
+        <div class="thumbs" id="thumbs"></div>
+      </div>
       <label>কবে খুলবে (ঐচ্ছিক)
         <input type="datetime-local" id="unlock">
         <span class="note">এই সময়ের আগে envelope খুলবে না। লিংক ডাটাবেস ছাড়া চললে এটা সম্পূর্ণ নিরাপদ lock নয়, কেউ চাইলে লিংক ঘেঁটে লেখা পড়ে ফেলতে পারে।</span>

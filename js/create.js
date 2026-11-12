@@ -7,6 +7,34 @@
   $("max").textContent = CFG.maxChars;
   $("msg").maxLength = CFG.maxChars;
 
+  // ছবি বাছা
+  let photoFiles = [];
+  const MAXP = CFG.maxPhotos || 6;
+  if (!supabaseReady()) $("photoField").style.display = "none";
+  function renderThumbs() {
+    const box = $("thumbs");
+    box.innerHTML = "";
+    photoFiles.forEach((f, i) => {
+      const d = document.createElement("div");
+      d.className = "thumb";
+      const img = document.createElement("img");
+      const url = URL.createObjectURL(f);
+      img.src = url;
+      img.onload = () => URL.revokeObjectURL(url);
+      const x = document.createElement("button");
+      x.type = "button"; x.textContent = "×"; x.setAttribute("aria-label", "ছবি সরান");
+      x.onclick = () => { photoFiles.splice(i, 1); renderThumbs(); };
+      d.append(img, x);
+      box.appendChild(d);
+    });
+  }
+  $("photos").addEventListener("change", (ev) => {
+    const picked = Array.from(ev.target.files).filter((f) => f.type.startsWith("image/"));
+    photoFiles = photoFiles.concat(picked).slice(0, MAXP);
+    ev.target.value = "";
+    renderThumbs();
+  });
+
   // টেমপ্লেট গ্রিড
   const grid = $("tplGrid");
   function renderGrid() {
@@ -45,6 +73,7 @@
     const e = valid(d);
     $("err").textContent = e;
     if (e) return;
+    if (photoFiles.length) $("err").textContent = "Preview-এ ছবি দেখানো হয় না। লিংক বানালে ছবিসহ দেখাবে।";
     // preview-এর জন্য সাময়িক লিংক (সেভ ছাড়াই)
     const url = viewBase() + "#d=" + (await pack(d)) + "&preview=1";
     window.open(url, "_blank");
@@ -59,7 +88,12 @@
     $("genBtn").disabled = true;
     $("genBtn").textContent = "তৈরি হচ্ছে...";
     try {
-      lastLink = await saveLetter(d);
+      const blobs = [];
+      for (const f of photoFiles) {
+        try { blobs.push(await compressImage(f)); }
+        catch (err) { throw new Error("\"" + f.name + "\" ছবিটা প্রক্রিয়া করা যায়নি (" + err.message + ")"); }
+      }
+      lastLink = await saveLetter(d, blobs, (i, n) => { $("genBtn").textContent = "ছবি আপলোড হচ্ছে " + i + "/" + n + "..."; });
       $("link").value = lastLink;
       $("openBtn").href = lastLink;
       $("qr").src = qrDataUrl(lastLink, 6, 2);
