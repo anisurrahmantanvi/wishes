@@ -13,6 +13,8 @@
   const key = TEMPLATES[data.t] ? data.t : "rose";
   applyTheme(key);
   startBackground($("bg"), key);
+  $("lblTo").textContent = "To: " + data.to;
+  $("lblFrom").textContent = "From: " + data.from;
 
   const isPreview = /(^|&)preview=1/.test(location.hash.replace(/^#/, ""));
   let opened = false;
@@ -34,17 +36,40 @@
     const iv = setInterval(() => { if (!checkLock()) clearInterval(iv); }, 1000);
   }
 
+  // পাপড়ি ও হার্ট ছড়িয়ে পড়ে
+  function burst() {
+    const r = $("env").getBoundingClientRect();
+    const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+    const chars = ["🌸", "❤", "💗", "✿", "🌺"];
+    for (let i = 0; i < 26; i++) {
+      const p = document.createElement("span");
+      const ang = Math.random() * Math.PI * 2, dist = 90 + Math.random() * 140;
+      p.className = "petal";
+      p.textContent = chars[i % chars.length];
+      p.style.left = cx + "px"; p.style.top = cy + "px";
+      p.style.setProperty("--dx", Math.cos(ang) * dist + "px");
+      p.style.setProperty("--dy", Math.sin(ang) * dist - 40 + "px");
+      p.style.setProperty("--rot", (Math.random() * 360 - 180) + "deg");
+      p.style.fontSize = 12 + Math.random() * 14 + "px";
+      document.querySelector(".stage").appendChild(p);
+      setTimeout(() => p.remove(), 1600);
+    }
+  }
+
   function openLetter() {
     if (opened || checkLock()) return;
     opened = true;
     $("env").classList.add("open");
     $("hint").style.display = "none";
+    burst();
+    // flap উল্টায় -> letter উঠে আসে -> envelope মিলিয়ে যায় -> পুরো letter ফোটে
+    setTimeout(() => $("intro").classList.add("fade"), 1900);
     setTimeout(() => {
       $("intro").style.display = "none";
       $("letter").classList.add("show");
       $("to").textContent = data.to + ",";
       typeWords();
-    }, 900);
+    }, 2300);
   }
 
   // শুরুর শব্দ থেকে শেষ পর্যন্ত একটা একটা করে শব্দ ফুটে ওঠে

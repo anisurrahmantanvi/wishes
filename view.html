@@ -14,10 +14,15 @@
     <canvas id="bg"></canvas>
 
     <div class="center" id="intro">
-      <div class="envelope" id="env" role="button" tabindex="0" aria-label="Letter খুলুন">
-        <div class="flap"></div>
-        <div class="seal">💌</div>
+      <div class="mail" id="env" role="button" tabindex="0" aria-label="Letter খুলুন">
+        <div class="mail-back"></div>
+        <div class="mail-paper"><span>💌</span><i></i><i></i><i class="s"></i></div>
+        <div class="mail-front"></div>
+        <div class="mail-flap"></div>
+        <div class="mail-label"><small id="lblTo"></small><small id="lblFrom"></small></div>
+        <div class="tap" aria-hidden="true"><b>👆</b></div>
       </div>
+      <div class="mail-shadow"></div>
       <p class="hint" id="hint">ট্যাপ করে খুলুন</p>
       <p class="locked" id="locked"></p>
     </div>
