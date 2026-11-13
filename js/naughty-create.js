@@ -16,7 +16,7 @@
   function render() {
     theme();
     const g = DESIRE.chars[ci].g;
-    if (oi > 5) oi = 0;
+    if (oi > 7) oi = 0;
     $("chars").innerHTML = "";
     DESIRE.chars.forEach((c, i) => {
       const d = document.createElement("button");

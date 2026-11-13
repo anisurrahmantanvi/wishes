@@ -17,8 +17,8 @@ const DESIRE = {
     { name: "Kabir", age: 26, g: "m", skin: "#f0c8a8", hair: "#7a2a2a", hs: "short", eye: "#2e5a4a" }
   ],
   outfits: {
-    f: ["Silk Robe", "Evening Gown", "Beach Halter", "Leather Jacket", "Satin Camisole", "Red Cocktail"],
-    m: ["Open Shirt", "Tuxedo", "Beach Swim", "Leather Jacket", "Silk Robe", "Black Turtleneck"]
+    f: ["Silk Robe", "Evening Gown", "Beach Halter", "Leather Jacket", "Satin Camisole", "Red Cocktail", "Bikini", "Lace Set"],
+    m: ["Open Shirt", "Tuxedo", "Beach Swim", "Leather Jacket", "Silk Robe", "Black Turtleneck", "Swim Trunks", "Boxer Briefs"]
   }
 };
 
@@ -45,6 +45,22 @@ function dMaleOutfit(o, skin, ac) {
   }
 }
 
+/* লম্বা (কোমর থেকে উরু পর্যন্ত) সরল ভেক্টর, নগ্নতা বা অঙ্গের বিস্তারিত নেই */
+function dFullBody(g, o, skin, ac) {
+  if (g === "f") {
+    const body = `<path d="M48 150C40 200 56 230 58 262 46 290 42 318 46 340H154C158 318 154 290 142 262 144 230 160 200 152 150 140 138 120 134 100 134 80 134 60 138 48 150Z" fill="${skin}"/>`;
+    const lace = o === 7;
+    const c1 = lace ? "#3a0a22" : ac, trim = lace ? `stroke="${ac}" stroke-width="2"` : "";
+    const top = `<path d="M70 170q14-10 30 2 16-12 30-2l-4 26q-12 8-26 2-14 6-26-2z" fill="${c1}" ${trim}/><path d="M78 168l-8-20M122 168l8-20" stroke="${c1}" stroke-width="3"/>`;
+    const bottom = `<path d="M58 280h84l-34 40h-16z" fill="${c1}" ${trim}/><path d="M58 280l-10-6M142 280l10-6" stroke="${c1}" stroke-width="3"/>`;
+    const scallop = lace ? `<path d="M72 196q4 5 8 0t8 0t8 0t8 0t8 0t8 0t8 0t8 0" fill="none" stroke="${ac}" stroke-width="1.6"/><path d="M62 280q4 5 8 0t8 0t8 0t8 0t8 0t8 0t8 0t8 0t8 0t8 0" fill="none" stroke="${ac}" stroke-width="1.6"/>` : "";
+    return body + top + bottom + scallop;
+  }
+  const body = `<path d="M30 150C22 220 44 250 56 262 50 290 50 318 52 340H148C150 318 150 290 144 262 156 250 178 220 170 150 150 134 126 130 100 130 74 130 50 134 30 150Z" fill="${skin}"/><path d="M100 160v100M72 186q28 10 56 0" stroke="#00000018" stroke-width="2" fill="none"/>`;
+  if (o === 6) return body + `<path d="M54 266h92l8 74H46z" fill="${ac}"/><path d="M54 266h92" stroke="#ffffff66" stroke-width="5"/><path d="M60 300h80" stroke="#ffffff44" stroke-width="3"/>`;
+  return body + `<path d="M54 266h92l4 74H50z" fill="#1b1624"/><rect x="54" y="264" width="92" height="9" fill="${ac}"/>`;
+}
+
 function dHair(c, back) {
   const h = c.hair, f = c.g === "f";
   if (back) {
@@ -62,7 +78,8 @@ function charSVG(ci, oi, pi) {
   const c = DESIRE.chars[ci] || DESIRE.chars[0];
   const pal = DESIRE.pals[pi] || DESIRE.pals[0];
   const f = c.g === "f";
-  const out = f ? dFemaleOutfit(oi, c.skin, pal.accent) : dMaleOutfit(oi, c.skin, pal.accent);
+  const full = oi >= 6;
+  const out = full ? dFullBody(c.g, oi, c.skin, pal.accent) : (f ? dFemaleOutfit(oi, c.skin, pal.accent) : dMaleOutfit(oi, c.skin, pal.accent));
   const face = f
     ? `<path d="M70 80c0-34 14-48 30-48s30 14 30 48c0 24-10 42-30 46-20-4-30-22-30-46z" fill="${c.skin}"/>`
     : `<path d="M68 74c0-30 14-42 32-42s32 12 32 42l-2 22c-8 20-18 30-30 30s-22-10-30-30z" fill="${c.skin}"/>`;
@@ -73,7 +90,7 @@ function charSVG(ci, oi, pi) {
     ? `<path d="M90 107q10 6 20 0q-10-3-20 0z" fill="#c2304f"/><path d="M92 107q8 8 16 0" fill="#e24a6b"/><path d="M98 96q2 3 4 0" stroke="#00000022" stroke-width="1.6" fill="none"/><ellipse cx="80" cy="100" rx="7" ry="4" fill="#ff7b9c" opacity=".35"/><ellipse cx="120" cy="100" rx="7" ry="4" fill="#ff7b9c" opacity=".35"/>`
     : `<path d="M91 108q9 5 18 0" stroke="#8a3a3a" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M98 96q2 3 4 0" stroke="#00000022" stroke-width="1.6" fill="none"/>`;
   const neck = `<rect x="88" y="118" width="24" height="30" rx="8" fill="${c.skin}"/>`;
-  return `<svg viewBox="0 0 200 262" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${c.name}, ${c.age}">` +
+  return `<svg viewBox="0 0 200 ${full ? 340 : 262}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${c.name}, ${c.age}">` +
     `${dHair(c, true)}${neck}${out}${face}${eyes}${mouth}${dHair(c, false)}</svg>`;
 }
 

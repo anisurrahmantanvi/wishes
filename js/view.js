@@ -24,7 +24,7 @@
     if (!adultOk) { $("sWelcome").style.visibility = "hidden"; await adultGate(); $("sWelcome").style.visibility = ""; }
     const ch = data.ch || {};
     const ci = Number.isInteger(ch.c) && ch.c >= 0 && ch.c < DESIRE.chars.length ? ch.c : 0;
-    const oi = Number.isInteger(ch.o) && ch.o >= 0 && ch.o < 6 ? ch.o : 0;
+    const oi = Number.isInteger(ch.o) && ch.o >= 0 && ch.o < 8 ? ch.o : 0;
     const pi = Number.isInteger(ch.p) && ch.p >= 0 && ch.p < DESIRE.pals.length ? ch.p : 0;
     const pal = DESIRE.pals[pi];
     Object.assign(TEMPLATES.desire, { bg: pal.bg, accent: pal.accent, paper: pal.paper, ink: pal.ink });
