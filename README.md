@@ -35,7 +35,7 @@ Project: `wishes` (Supabase)। `js/config.js`-এ project URL ও publishable k
 `index.html`, `create.html`, `view.html`, `about.html`, `contact.html` (ফর্ম → `send_contact`), `privacy.html`, `terms.html`, `blog/` (৫টা লেখা), `sitemap.xml`, `robots.txt`। `view.html` সার্চ ইঞ্জিনে ইনডেক্স হয় না। Terms/Privacy সাধারণ টেমপ্লেট, আইনি পরামর্শ নয়।
 
 ## টেমপ্লেট ও দৃশ্য
-টেমপ্লেট: rose, galaxy, night, sunset, blossom, gold (ডাটাবেস এগুলোই গ্রহণ করে)। দৃশ্যের ক্রম: Welcome → স্লাইডশো (ছবি থাকলে) → "I ❤ YOU" (ঐচ্ছিক, create পাতায় টিক দিলে; ৩ সেকেন্ড, ট্যাপে স্কিপ) → envelope → letter।
+টেমপ্লেট: rose, galaxy, night, sunset, blossom, gold, romantic, anniversary, newyear (আতশবাজি), summer (সমুদ্রের ঢেউ ও ছোট্ট আঁকা মূর্তি) (ডাটাবেস এগুলোই গ্রহণ করে)। দৃশ্যের ক্রম: Welcome → স্লাইডশো (ছবি থাকলে) → "I ❤ YOU" (ঐচ্ছিক, create পাতায় টিক দিলে; ৩ সেকেন্ড, ট্যাপে স্কিপ) → envelope → letter।
 
 ## এখনো বাকি / সীমাবদ্ধতা
 - `get_letter` যেকোনো খোলাকেই "প্রথম খোলা" ধরে, তাই নির্মাতা নিজে "খুলে দেখুন" চাপলেও ১৫ দিনের ঘড়ি শুরু হয়। লিংক-প্রিভিউ বটও খুলতে পারে।

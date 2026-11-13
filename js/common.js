@@ -33,6 +33,30 @@ const TEMPLATES = {
   }
 };
 
+/* নতুন থিম: mode অনুযায়ী ব্যাকগ্রাউন্ডে বাড়তি দৃশ্য (আতশবাজি, সমুদ্রের ঢেউ) */
+Object.assign(TEMPLATES, {
+  romantic: {
+    name: "Romantic Night", emoji: "🕯️",
+    bg: ["#240510", "#8c1230"], accent: "#ffb27a",
+    paper: "#fff3ee", ink: "#4a1020", particles: ["❤", "✦", "💋"]
+  },
+  anniversary: {
+    name: "Anniversary", emoji: "🥂",
+    bg: ["#1a1030", "#9b5a2f"], accent: "#ffd9a0",
+    paper: "#fff9f0", ink: "#3b2410", particles: ["✨", "❤", "🥂"]
+  },
+  newyear: {
+    name: "New Year Love", emoji: "🎆", mode: "newyear",
+    bg: ["#050a1f", "#203a8c"], accent: "#ffe27a",
+    paper: "#f4f7ff", ink: "#142050", particles: ["✨", "🎉", "❤"]
+  },
+  summer: {
+    name: "Hot Summer Love", emoji: "👙", mode: "summer",
+    bg: ["#3a0f3d", "#ff6a5c"], accent: "#ffc98a",
+    paper: "#fff6ee", ink: "#4d1a2a", particles: ["☀", "❤", "🌴"]
+  }
+});
+
 const CFG = window.WISHES_CONFIG || { supabase: {}, maxChars: 1200, maxPhotos: 6 };
 
 /* ---------- base64url ---------- */
@@ -241,6 +265,26 @@ function startBackground(canvas, key) {
   }
   const heartSprite = makeHeart(t.accent);
 
+  // সমুদ্রের ধারে ছোট্ট আঁকা মূর্তি (নিজের আঁকা সরল ভেক্টর ছবি)
+  let art = null;
+  if (t.mode === "summer") {
+    const svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 130">' +
+      '<path d="M22 9c-6 4-8 16-5 30 2-9 5-14 9-16z" fill="#2a0f1e"/>' +
+      '<path d="M38 9c6 4 8 16 5 30-2-9-5-14-9-16z" fill="#2a0f1e"/>' +
+      '<circle cx="30" cy="14" r="8.5" fill="#e9a67a"/>' +
+      '<path d="M21 12c2-9 16-9 18 0-5-3-13-3-18 0z" fill="#2a0f1e"/>' +
+      '<rect x="27" y="22" width="6" height="6" fill="#e9a67a"/>' +
+      '<path d="M20 30c4-3 16-3 20 0l-2 20c-2 3-14 3-16 0z" fill="#e9a67a"/>' +
+      '<path d="M22 34c3 5 13 5 16 0-1 6-3 9-8 9s-7-3-8-9z" fill="#ff4f8b"/>' +
+      '<path d="M21 62c3 5 15 5 18 0l3 16c-6 3-18 3-24 0z" fill="#ff4f8b"/>' +
+      '<path d="M22 70l-3 50h8l3-38 3 38h8l-3-50z" fill="#e9a67a"/>' +
+      '<path d="M20 31l-8 22 4 2 7-16zM40 31l8 22-4 2-7-16z" fill="#e9a67a"/>' +
+      '</svg>';
+    art = new Image();
+    art.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg);
+  }
+  let bursts = [], nextBurst = 600;
+
   // nebula (মহাকাশের রঙিন মেঘ) একবার আঁকা হয়
   function buildNebula() {
     const c = document.createElement("canvas");
@@ -313,6 +357,41 @@ function startBackground(canvas, key) {
       ctx.globalAlpha = p.a;
       ctx.drawImage(heartSprite, x - p.s, p.y - p.s, p.s * 2, p.s * 2);
       if (p.y < -50) Object.assign(p, newHeart(false));
+    }
+
+    if (t.mode === "newyear" && !reduce) {
+      if (ts > nextBurst) {
+        const bx = w * (0.15 + Math.random() * 0.7), by = h * (0.12 + Math.random() * 0.4);
+        const col = Math.random() < 0.5 ? t.accent : ["#ff8fb1", "#8fd3ff", "#ffffff"][Math.floor(Math.random() * 3)];
+        const n = lowEnd ? 18 : 30;
+        bursts.push({ life: 1, col, p: Array.from({ length: n }, (_, k) => ({ x: bx, y: by, a: (k / n) * 6.2832, v: 1.2 + Math.random() * 1.6 })) });
+        nextBurst = ts + 900 + Math.random() * 1400;
+      }
+      bursts = bursts.filter((b) => b.life > 0);
+      for (const b of bursts) {
+        ctx.fillStyle = b.col; ctx.globalAlpha = Math.max(b.life, 0);
+        for (const q of b.p) {
+          q.x += Math.cos(q.a) * q.v; q.y += Math.sin(q.a) * q.v + (1 - b.life) * 0.8; q.v *= 0.975;
+          ctx.beginPath(); ctx.arc(q.x, q.y, 1.8, 0, 6.2832); ctx.fill();
+        }
+        b.life -= 0.012;
+      }
+      ctx.globalAlpha = 1;
+    }
+
+    if (t.mode === "summer") {
+      const base = h * 0.9;
+      const ah = Math.min(130, h * 0.2), aw = ah * 0.46;
+      if (art && art.complete && art.naturalWidth) {
+        ctx.globalAlpha = 0.92;
+        ctx.drawImage(art, w * 0.78 - aw / 2, base - ah * 0.82 + Math.sin(time * 1.2) * 1.5, aw, ah);
+      }
+      ctx.globalAlpha = 1;
+      [[0.35, 0.9, 14, "rgba(255,170,120,.28)", 1], [0.5, 1.3, 10, "rgba(255,110,150,.30)", 0], [0.25, 1.7, 7, "rgba(60,20,70,.45)", 2]].forEach(([f, sp, amp, col, k]) => {
+        ctx.fillStyle = col; ctx.beginPath(); ctx.moveTo(0, h);
+        for (let x = 0; x <= w; x += 10) ctx.lineTo(x, base + k * 14 + Math.sin(x * f * 0.04 + time * sp) * amp * 0.5);
+        ctx.lineTo(w, h); ctx.closePath(); ctx.fill();
+      });
     }
 
     // মাঝেমধ্যে shooting star
