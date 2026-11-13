@@ -148,6 +148,7 @@
   // "I ❤ YOU" মুহূর্ত: ৩ সেকেন্ডে নিজে এগোয়, ট্যাপ করলে সঙ্গে সঙ্গে
   let loveTimer = null;
   function toEnvelope() {
+    if (data.love !== true) return go("sEnvelope");
     go("sLove");
     clearTimeout(loveTimer);
     loveTimer = setTimeout(skipLove, 3200);

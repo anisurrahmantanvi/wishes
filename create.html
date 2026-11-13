@@ -6,7 +6,7 @@
   <title>Letter লিখুন — Wishes</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=5">
+  <link rel="stylesheet" href="css/style.css?v=6">
 </head>
 <body>
   <div class="wrap">
@@ -48,6 +48,7 @@
           </label>
         </div>
       </details>
+      <label class="check"><input type="checkbox" id="love"> <span>স্লাইডশোর পর "I ❤ YOU" অ্যানিমেশন দেখাতে চাই</span></label>
       <div id="photoField">
         <label>ছবি (ঐচ্ছিক, সর্বোচ্চ ৬টা) — প্রতিটার নিচে ক্যাপশন লিখতে পারবেন
           <input type="file" id="photos" accept="image/*" multiple>
@@ -63,7 +64,7 @@
         <button type="button" class="btn ghost" id="previewBtn">Preview দেখুন</button>
         <button type="submit" class="btn" id="genBtn">লিংক ও QR বানান</button>
       </div>
-      <p class="note">লিংক বানালে আপনি <a href="terms.html" target="_blank" rel="noopener">শর্তাবলী</a> ও <a href="privacy.html" target="_blank" rel="noopener">গোপনীয়তা নীতি</a> মেনে নিচ্ছেন। letter ও ছবি ১৮০ দিন পর নিজে থেকে মুছে যায়।</p>
+      <p class="note">লিংক বানালে আপনি <a href="terms.html" target="_blank" rel="noopener">শর্তাবলী</a> ও <a href="privacy.html" target="_blank" rel="noopener">গোপনীয়তা নীতি</a> মেনে নিচ্ছেন। letter যেদিন প্রথম খোলা হয় তার ১৫ দিন পর (আর না খুললে সর্বোচ্চ ১৮০ দিন পর) ছবিসহ নিজে থেকে মুছে যায়।</p>
       <p class="note" id="err" style="color:#ffb3b3"></p>
     </form>
 
@@ -83,9 +84,9 @@
   <footer class="copy sitefoot"><nav><a href="about.html">পরিচিতি</a><a href="blog/index.html">ব্লগ</a><a href="privacy.html">গোপনীয়তা নীতি</a><a href="terms.html">শর্তাবলী</a><a href="contact.html">যোগাযোগ</a></nav>© <span class="yr">2026</span> Wishes. সর্বস্বত্ব সংরক্ষিত।</footer>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
-  <script src="js/config.js?v=5"></script>
-  <script src="js/common.js?v=5"></script>
-  <script src="js/create.js?v=5"></script>
+  <script src="js/config.js?v=6"></script>
+  <script src="js/common.js?v=6"></script>
+  <script src="js/create.js?v=6"></script>
   <script>document.querySelectorAll(".yr").forEach(function(e){e.textContent=new Date().getFullYear()});</script>
 </body>
 </html>

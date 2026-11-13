@@ -66,6 +66,7 @@
       const v = $(id).value.trim();
       if (v) data[k] = v;
     });
+    if ($("love").checked) data.love = true;
     const u = $("unlock").value;
     if (u) data.unlock = new Date(u).getTime();
     return data;

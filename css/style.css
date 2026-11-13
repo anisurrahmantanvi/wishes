@@ -241,3 +241,5 @@ body.landing { background: #04030f; }
 .faq summary { cursor: pointer; font-weight: 600; }
 .faq p { margin-top: 8px; opacity: .9; }
 @media (prefers-reduced-motion: reduce) { .hero h1, .hero .btn { animation: none; } .reveal { opacity: 1; transform: none; transition: none; } }
+.check { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+.check input { width: 20px; height: 20px; flex: none; accent-color: var(--accent); }
