@@ -6,7 +6,7 @@
   <title>Letter লিখুন — Wishes</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=3">
+  <link rel="stylesheet" href="css/style.css?v=4">
 </head>
 <body>
   <div class="wrap">
@@ -31,8 +31,25 @@
         <textarea id="msg" placeholder="মনের কথা লিখুন..." required></textarea>
         <span class="counter"><span id="count">0</span> / <span id="max"></span></span>
       </label>
+      <details class="more">
+        <summary>আরও সাজান (ঐচ্ছিক): টাইটেল ও ফিতা</summary>
+        <div class="form" style="margin-top:10px">
+          <label>Welcome স্ক্রিনের টাইটেল
+            <input id="wt" maxlength="80" placeholder="Welcome to Our Journey of Love">
+          </label>
+          <label>Letter-এর টাইটেল
+            <input id="lt" maxlength="80" placeholder="Five Wonderful Years">
+          </label>
+          <label>Letter-এর সাবটাইটেল
+            <input id="ls" maxlength="120" placeholder="Celebrating Our Journey of Love &amp; Dreams">
+          </label>
+          <label>ফিতার লেখা
+            <input id="rb" maxlength="30" placeholder="5th ANNIVERSARY">
+          </label>
+        </div>
+      </details>
       <div id="photoField">
-        <label>ছবি (ঐচ্ছিক, সর্বোচ্চ ৬টা)
+        <label>ছবি (ঐচ্ছিক, সর্বোচ্চ ৬টা) — প্রতিটার নিচে ক্যাপশন লিখতে পারবেন
           <input type="file" id="photos" accept="image/*" multiple>
         </label>
         <p class="note">ছবি ছোট করে আপলোড হবে এবং letter-এর শেষে সুন্দর করে দেখানো হবে। যার কাছে লিংক যাবে, সে-ই ছবি দেখতে পাবে, তাই শুধু সেই ছবি দিন যেটা শেয়ার করতে স্বস্তি বোধ করেন।</p>
@@ -65,9 +82,9 @@
   <footer class="copy">© <span class="yr">2026</span> Wishes. সর্বস্বত্ব সংরক্ষিত।</footer>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
-  <script src="js/config.js?v=3"></script>
-  <script src="js/common.js?v=3"></script>
-  <script src="js/create.js?v=3"></script>
+  <script src="js/config.js?v=4"></script>
+  <script src="js/common.js?v=4"></script>
+  <script src="js/create.js?v=4"></script>
   <script>document.querySelectorAll(".yr").forEach(function(e){e.textContent=new Date().getFullYear()});</script>
 </body>
 </html>

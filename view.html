@@ -6,33 +6,65 @@
   <meta name="robots" content="noindex, nofollow">
   <title>আপনার জন্য একটা letter 💌</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=3">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;700&family=Great+Vibes&family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css?v=4">
 </head>
 <body>
   <div class="stage">
     <canvas id="bg"></canvas>
 
-    <div class="center" id="intro">
-      <div class="mail" id="env" role="button" tabindex="0" aria-label="Letter খুলুন">
-        <div class="mail-back"></div>
-        <div class="mail-paper"><span>💌</span><i></i><i></i><i class="s"></i></div>
-        <div class="mail-front"></div>
-        <div class="mail-flap"></div>
-        <div class="mail-label"><small id="lblTo"></small><small id="lblFrom"></small></div>
-        <div class="tap" aria-hidden="true"><b>👆</b></div>
+    <!-- দৃশ্য ১: Welcome -->
+    <section class="scene show" id="sWelcome">
+      <div class="wbg" id="wbg"></div>
+      <div class="wcontent">
+        <h1 class="wtitle" id="wTitle"></h1>
+        <p class="wsub" id="wSub"></p>
+        <button class="btn" id="beginBtn" type="button">আমাদের গল্প শুরু করুন</button>
+        <p class="locked" id="locked"></p>
       </div>
-      <div class="mail-shadow"></div>
-      <p class="hint" id="hint">ট্যাপ করে খুলুন</p>
-      <p class="locked" id="locked"></p>
-    </div>
+    </section>
 
+    <!-- দৃশ্য ২: ছবির স্লাইডশো (ছবি থাকলে) -->
+    <section class="scene" id="sSlides">
+      <div class="slides-wrap">
+        <div class="track" id="track"></div>
+        <div class="dots" id="dots"></div>
+        <div class="slide-actions">
+          <button class="btn ghost" id="backBtn" type="button">← Back</button>
+          <button class="btn ghost" id="playBtn" type="button">▶ Slideshow</button>
+          <button class="btn" id="nextBtn" type="button">Next Surprise →</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- দৃশ্য ৩: envelope -->
+    <section class="scene" id="sEnvelope">
+      <div class="center" id="intro">
+        <div class="mail" id="env" role="button" tabindex="0" aria-label="Letter খুলুন">
+          <div class="mail-back"></div>
+          <div class="mail-paper"><span>💌</span><i></i><i></i><i class="s"></i></div>
+          <div class="mail-front"></div>
+          <div class="mail-flap"></div>
+          <div class="mail-label"><small id="lblTo"></small><small id="lblFrom"></small></div>
+          <div class="tap" aria-hidden="true"><b>👆</b></div>
+        </div>
+        <div class="mail-shadow"></div>
+        <p class="hint" id="hint">ট্যাপ করে খুলুন</p>
+      </div>
+    </section>
+
+    <!-- দৃশ্য ৪: letter -->
     <article class="letter" id="letter">
+      <div class="ribbon" id="ribbon" hidden></div>
       <button class="skip" id="skip" type="button">সব দেখান</button>
+      <div class="lhead" id="lhead" hidden>
+        <h2 class="ltitle" id="lTitle"></h2>
+        <p class="lsub" id="lSub"></p>
+      </div>
       <div class="to" id="to"></div>
       <div class="body cursor" id="body"></div>
       <div class="from" id="from"></div>
-      <div class="gallery" id="gallery"></div>
     </article>
 
     <div class="footer-cta" id="cta" style="position:absolute;bottom:44px;left:0;right:0;z-index:3">
@@ -43,9 +75,9 @@
 
   <div class="lightbox" id="lb"><img alt=""></div>
 
-  <script src="js/config.js?v=3"></script>
-  <script src="js/common.js?v=3"></script>
-  <script src="js/view.js?v=3"></script>
+  <script src="js/config.js?v=4"></script>
+  <script src="js/common.js?v=4"></script>
+  <script src="js/view.js?v=4"></script>
   <script>document.querySelectorAll(".yr").forEach(function(e){e.textContent=new Date().getFullYear()});</script>
 </body>
 </html>

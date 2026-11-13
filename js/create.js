@@ -7,30 +7,33 @@
   $("max").textContent = CFG.maxChars;
   $("msg").maxLength = CFG.maxChars;
 
-  // ছবি বাছা
-  let photoFiles = [];
+  // ছবি বাছা (প্রতিটার ক্যাপশনসহ)
+  let photos = []; // { file, cap }
   const MAXP = CFG.maxPhotos || 6;
   if (!supabaseReady()) $("photoField").style.display = "none";
   function renderThumbs() {
     const box = $("thumbs");
     box.innerHTML = "";
-    photoFiles.forEach((f, i) => {
+    photos.forEach((p, i) => {
       const d = document.createElement("div");
       d.className = "thumb";
       const img = document.createElement("img");
-      const url = URL.createObjectURL(f);
+      const url = URL.createObjectURL(p.file);
       img.src = url;
       img.onload = () => URL.revokeObjectURL(url);
       const x = document.createElement("button");
       x.type = "button"; x.textContent = "×"; x.setAttribute("aria-label", "ছবি সরান");
-      x.onclick = () => { photoFiles.splice(i, 1); renderThumbs(); };
-      d.append(img, x);
+      x.onclick = () => { photos.splice(i, 1); renderThumbs(); };
+      const cap = document.createElement("input");
+      cap.className = "cap"; cap.maxLength = 60; cap.placeholder = "ক্যাপশন"; cap.value = p.cap;
+      cap.oninput = () => { p.cap = cap.value; };
+      d.append(img, x, cap);
       box.appendChild(d);
     });
   }
   $("photos").addEventListener("change", (ev) => {
-    const picked = Array.from(ev.target.files).filter((f) => f.type.startsWith("image/"));
-    photoFiles = photoFiles.concat(picked).slice(0, MAXP);
+    const picked = Array.from(ev.target.files).filter((f) => f.type.startsWith("image/")).map((file) => ({ file, cap: "" }));
+    photos = photos.concat(picked).slice(0, MAXP);
     ev.target.value = "";
     renderThumbs();
   });
@@ -59,6 +62,10 @@
       from: $("from").value.trim(),
       msg: $("msg").value.trim()
     };
+    [["wt", "wt"], ["lt", "lt"], ["ls", "ls"], ["rb", "rb"]].forEach(([id, k]) => {
+      const v = $(id).value.trim();
+      if (v) data[k] = v;
+    });
     const u = $("unlock").value;
     if (u) data.unlock = new Date(u).getTime();
     return data;
@@ -73,7 +80,7 @@
     const e = valid(d);
     $("err").textContent = e;
     if (e) return;
-    if (photoFiles.length) $("err").textContent = "Preview-এ ছবি দেখানো হয় না। লিংক বানালে ছবিসহ দেখাবে।";
+    if (photos.length) $("err").textContent = "Preview-এ ছবি দেখানো হয় না। লিংক বানালে ছবিসহ দেখাবে।";
     // preview-এর জন্য সাময়িক লিংক (সেভ ছাড়াই)
     const url = viewBase() + "#d=" + (await pack(d)) + "&preview=1";
     window.open(url, "_blank");
@@ -85,13 +92,14 @@
     const e = valid(d);
     $("err").textContent = e;
     if (e) return;
+    if (photos.some((p) => p.cap.trim())) d.caps = photos.map((p) => p.cap.trim().slice(0, 60));
     $("genBtn").disabled = true;
     $("genBtn").textContent = "তৈরি হচ্ছে...";
     try {
       const blobs = [];
-      for (const f of photoFiles) {
-        try { blobs.push(await compressImage(f)); }
-        catch (err) { throw new Error("\"" + f.name + "\" ছবিটা প্রক্রিয়া করা যায়নি (" + err.message + ")"); }
+      for (const p of photos) {
+        try { blobs.push(await compressImage(p.file)); }
+        catch (err) { throw new Error("\"" + p.file.name + "\" ছবিটা প্রক্রিয়া করা যায়নি (" + err.message + ")"); }
       }
       lastLink = await saveLetter(d, blobs, (i, n) => { $("genBtn").textContent = "ছবি আপলোড হচ্ছে " + i + "/" + n + "..."; });
       $("link").value = lastLink;

@@ -4,12 +4,13 @@
 
 ## ফ্লো
 টেমপ্লেট বাছুন → customize → letter লিখুন → লিংক ও QR → QR কার্ড PNG ডাউনলোড।
-QR স্ক্যান → envelope → ট্যাপ করলে খোলে → ব্যাকগ্রাউন্ড animation-এর উপর letter প্রথম শব্দ থেকে শেষ শব্দ পর্যন্ত ফুটে ওঠে।
+QR স্ক্যান → **Welcome** (প্রথম ছবি ব্যাকগ্রাউন্ডে, "শুরু করুন" বাটন) → **ছবির স্লাইডশো** (ক্যাপশনসহ, ছবি থাকলে) → **envelope** (ট্যাপ করলে ফ্ল্যাপ উল্টে letter ওঠে) → **letter** (টাইটেল কার্ড, কোণায় ফিতা, লেখা একটা একটা শব্দ করে ফোটে)। ব্যাকগ্রাউন্ডে সবসময় galaxy-love animation চলে।
+ঐচ্ছিক ঘর: Welcome টাইটেল, letter টাইটেল ও সাবটাইটেল, ফিতার লেখা, প্রতিটা ছবির ক্যাপশন। unlock তারিখ দিলে "শুরু করুন" বাটন সেই সময় পর্যন্ত বন্ধ থাকে।
 
 ## ফাইল
 - `index.html` ল্যান্ডিং পেজ
 - `create.html` + `js/create.js` letter তৈরি, লিংক, QR, PNG ডাউনলোড
-- `view.html` + `js/view.js` envelope, unlock countdown, word-by-word reveal
+- `view.html` + `js/view.js` Welcome, স্লাইডশো, envelope, letter, unlock countdown
 - `js/common.js` টেমপ্লেট, লিংক encode/decode, QR, canvas ব্যাকগ্রাউন্ড
 - `js/config.js` Supabase কনফিগ
 - `css/style.css`
@@ -33,5 +34,6 @@ Settings → Pages → Branch `main` / root। কাস্টম ডোমে�
 
 ## অবস্থা
 - JS ফাইলের সিনট্যাক্স যাচাই করা হয়েছে। ডাটাবেসের ফাংশন ও bucket-এর নিয়ম `anon` role দিয়ে SQL-এ যাচাই করা হয়েছে।
-- ব্রাউজারে UI, animation, ছবি আপলোড (ওয়েব API দিয়ে) ও QR স্ক্যান এখনো টেস্ট করা হয়নি।
+- `view.js` একটা নকল DOM-এ চালিয়ে রানটাইম ভুল যাচাই করা হয়েছে (আসল ব্রাউজার নয়)।
+- ব্রাউজারে UI, animation, স্লাইডশোর স্ক্রল, ছবি আপলোড (ওয়েব API দিয়ে) ও QR স্ক্যান এখনো টেস্ট করা হয়নি।
 - QR লাইব্রেরি (`qrcode-generator`) cdnjs থেকে লোড হয়।
