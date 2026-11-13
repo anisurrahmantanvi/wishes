@@ -6,6 +6,16 @@ const TEMPLATES = {
     bg: ["#3a0a1f", "#b0124f"], accent: "#ff8fb1",
     paper: "#fff5f7", ink: "#4a1230", particles: ["❤", "💖", "💗"]
   },
+  galaxy: {
+    name: "Galaxy Love", emoji: "🌌",
+    bg: ["#0b0630", "#5b2a9e"], accent: "#c9a8ff",
+    paper: "#f6f2ff", ink: "#24134f", particles: ["✦", "💜", "✧"]
+  },
+  gold: {
+    name: "Golden Promise", emoji: "💍",
+    bg: ["#1c1405", "#8a6417"], accent: "#ffd978",
+    paper: "#fffaf0", ink: "#3b2a07", particles: ["✨", "✦", "💛"]
+  },
   night: {
     name: "Starry Night", emoji: "🌙",
     bg: ["#050b24", "#1c2a6b"], accent: "#ffd98a",
@@ -78,7 +88,12 @@ async function sbRpc(fn, args) {
     headers: sbHeaders({ "Content-Type": "application/json" }),
     body: JSON.stringify(args)
   });
-  if (!res.ok) throw new Error("সার্ভারে সমস্যা (" + res.status + ")");
+  if (!res.ok) {
+    let body = "";
+    try { body = await res.text(); } catch (e) { /* ignore */ }
+    if (/rate limited/i.test(body)) throw new Error("অনেক বেশি অনুরোধ হয়ে গেছে। এক ঘণ্টা পরে আবার চেষ্টা করুন।");
+    throw new Error("সার্ভারে সমস্যা (" + res.status + ")");
+  }
   const text = await res.text();
   return text ? JSON.parse(text) : null;
 }
@@ -119,7 +134,10 @@ async function uploadPhoto(blob, path) {
     headers: sbHeaders({ "Content-Type": "image/jpeg", "x-upsert": "false" }),
     body: blob
   });
-  if (!res.ok) throw new Error("ছবি আপলোড ব্যর্থ (" + res.status + ")");
+  if (!res.ok) {
+    if (res.status === 429) throw new Error("অনেক বেশি ছবি আপলোড হয়ে গেছে, এক ঘণ্টা পরে আবার চেষ্টা করুন।");
+    throw new Error("ছবি আপলোড ব্যর্থ (" + res.status + ")");
+  }
 }
 
 // letter সেভ করে শেয়ার করার লিংক ফেরত দেয়
@@ -162,6 +180,10 @@ async function loadLetter() {
 
 function reportLetter(id, reason) {
   return sbRpc("report_letter", { p_id: id, p_reason: reason || null });
+}
+
+function sendContact(name, message, contact) {
+  return sbRpc("send_contact", { p_name: name || null, p_email: contact || null, p_message: message });
 }
 
 /* ---------- QR (qrcode-generator লাইব্রেরি CDN থেকে লোড হয়) ---------- */

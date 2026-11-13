@@ -7,13 +7,14 @@
   <meta name="description" content="প্রিয় মানুষের জন্য সুন্দর animation-সহ wishes letter লিখুন, লিংক ও QR কোড বানিয়ে শেয়ার করুন।">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=4">
+  <link rel="stylesheet" href="css/style.css?v=5">
 </head>
-<body>
+<body class="landing">
+  <canvas class="bgfixed" id="bg"></canvas>
   <div class="wrap">
     <header class="top">
       <a class="logo" href="index.html">💌 Wishes</a>
-      <a class="btn" href="create.html">Letter লিখুন</a>
+      <nav class="nav"><a href="blog/index.html">ব্লগ</a><a href="about.html">পরিচিতি</a><a class="btn" href="create.html">Letter লিখুন</a></nav>
     </header>
 
     <section class="hero">
@@ -27,7 +28,7 @@
       <div class="grid" id="tplGrid"></div>
     </section>
 
-    <section class="steps">
+    <section class="steps reveal">
       <h2>কীভাবে কাজ করে</h2>
       <div class="grid">
         <div class="card"><b>১. টেমপ্লেট বাছুন</b><p class="note">জন্মদিন, anniversary বা শুধু ভালোবাসার জন্য।</p></div>
@@ -36,11 +37,23 @@
         <div class="card"><b>৪. সারপ্রাইজ!</b><p class="note">স্ক্যান করলে envelope খুলে letter ফুটে উঠবে।</p></div>
       </div>
     </section>
-  </div>
-  <footer class="copy">© <span class="yr">2026</span> Wishes. সর্বস্বত্ব সংরক্ষিত।</footer>
 
-  <script src="js/config.js?v=4"></script>
-  <script src="js/common.js?v=4"></script>
+    <section class="faq reveal">
+      <h2 class="section-title">সাধারণ প্রশ্ন</h2>
+      <details><summary>এটা কি বিনামূল্যে?</summary><p>হ্যাঁ, letter বানানো ও শেয়ার করা সম্পূর্ণ বিনামূল্যে।</p></details>
+      <details><summary>আমার letter কে দেখতে পাবে?</summary><p>শুধু যাঁর কাছে লিংক বা QR আছে। letter সার্চ ইঞ্জিনে আসে না।</p></details>
+      <details><summary>letter কতদিন থাকে?</summary><p>১৮০ দিন পর letter ও ছবি নিজে থেকে মুছে যায়। দরকারি ছবি নিজের কাছে রেখে দিন।</p></details>
+      <details><summary>নির্দিষ্ট সময়ে খুলবে এমন করা যায়?</summary><p>যায়। letter বানানোর সময় "কবে খুলবে" ঘরে তারিখ ও সময় দিন। তার আগে লিংক খুললে শুধু গণনা দেখা যায়, লেখা ও ছবি লুকানো থাকে।</p></details>
+    </section>
+
+    <section class="mini reveal">
+      <p class="note">কী লিখবেন ভেবে পাচ্ছেন না? <a href="blog/how-to-write-a-love-letter.html">ভালোবাসার চিঠি লেখার সহজ পদ্ধতি</a> পড়ে দেখুন।</p>
+    </section>
+  </div>
+  <footer class="copy sitefoot"><nav><a href="about.html">পরিচিতি</a><a href="blog/index.html">ব্লগ</a><a href="privacy.html">গোপনীয়তা নীতি</a><a href="terms.html">শর্তাবলী</a><a href="contact.html">যোগাযোগ</a></nav>© <span class="yr">2026</span> Wishes. সর্বস্বত্ব সংরক্ষিত।</footer>
+
+  <script src="js/config.js?v=5"></script>
+  <script src="js/common.js?v=5"></script>
   <script>
     const grid = document.getElementById("tplGrid");
     Object.entries(TEMPLATES).forEach(([key, t]) => {
@@ -52,6 +65,11 @@
       a.innerHTML = `<div class="sw" style="background:linear-gradient(160deg,${t.bg[0]},${t.bg[1]})">${t.emoji}</div><b>${t.name}</b>`;
       grid.appendChild(a);
     });
+  </script>
+  <script>
+    startBackground(document.getElementById("bg"), "galaxy");
+    var io = "IntersectionObserver" in window ? new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }); }, { threshold: .15 }) : null;
+    document.querySelectorAll(".reveal").forEach(function (el) { io ? io.observe(el) : el.classList.add("in"); });
   </script>
   <script>document.querySelectorAll(".yr").forEach(function(e){e.textContent=new Date().getFullYear()});</script>
 </body>

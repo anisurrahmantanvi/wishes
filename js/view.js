@@ -60,7 +60,11 @@
   function checkLock() {
     if (!data.unlock || isPreview) return false;
     const left = data.unlock - Date.now();
-    if (left <= 0) { $("locked").textContent = ""; $("beginBtn").disabled = false; return false; }
+    if (left <= 0) {
+      // ডাটাবেসের letter-এ লুকানো অংশ সার্ভার থেকে আবার আনতে হবে
+      if (data.locked) { location.reload(); return true; }
+      $("locked").textContent = ""; $("beginBtn").disabled = false; return false;
+    }
     const s = Math.floor(left / 1000);
     const d = Math.floor(s / 86400), h = Math.floor((s % 86400) / 3600),
           m = Math.floor((s % 3600) / 60), sec = s % 60;
@@ -136,10 +140,23 @@
   $("beginBtn").onclick = () => {
     if (checkLock()) return;
     if (photos.length) { go("sSlides"); setTimeout(() => slideTo(0), 60); }
-    else go("sEnvelope");
+    else toEnvelope();
   };
   $("backBtn").onclick = () => { stopPlay(); go("sWelcome"); };
-  $("nextBtn").onclick = () => { stopPlay(); go("sEnvelope"); };
+  $("nextBtn").onclick = () => { stopPlay(); toEnvelope(); };
+
+  // "I ❤ YOU" মুহূর্ত: ৩ সেকেন্ডে নিজে এগোয়, ট্যাপ করলে সঙ্গে সঙ্গে
+  let loveTimer = null;
+  function toEnvelope() {
+    go("sLove");
+    clearTimeout(loveTimer);
+    loveTimer = setTimeout(skipLove, 3200);
+  }
+  function skipLove() {
+    clearTimeout(loveTimer);
+    if ($("sLove").classList.contains("show")) go("sEnvelope");
+  }
+  $("sLove").addEventListener("click", skipLove);
 
   /* ---------- envelope ও letter ---------- */
   // পাপড়ি ও হার্ট ছড়িয়ে পড়ে

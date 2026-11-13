@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://anisurrahmantanvi.github.io/wishes/sitemap.xml

@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;700&family=Great+Vibes&family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=4">
+  <link rel="stylesheet" href="css/style.css?v=5">
 </head>
 <body>
   <div class="stage">
@@ -36,6 +36,11 @@
           <button class="btn" id="nextBtn" type="button">Next Surprise →</button>
         </div>
       </div>
+    </section>
+
+    <!-- দৃশ্য ২.৫: I ❤ YOU -->
+    <section class="scene" id="sLove" aria-label="I love you">
+      <div class="love"><span class="lw">I</span><span class="lh">❤</span><span class="lw">YOU</span><small>ট্যাপ করলে এগিয়ে যাবে</small></div>
     </section>
 
     <!-- দৃশ্য ৩: envelope -->
@@ -70,14 +75,14 @@
     <div class="footer-cta" id="cta" style="position:absolute;bottom:44px;left:0;right:0;z-index:3">
       <a class="btn ghost" href="create.html">নিজের letter বানান 💌</a>
     </div>
-    <footer class="copy fixed">© <span class="yr">2026</span> Wishes. সর্বস্বত্ব সংরক্ষিত। <button class="linkbtn" id="reportBtn" type="button" style="display:none">রিপোর্ট করুন</button></footer>
+    <footer class="copy fixed">© <span class="yr">2026</span> Wishes. সর্বস্বত্ব সংরক্ষিত। <a href="privacy.html">গোপনীয়তা</a> · <a href="terms.html">শর্তাবলী</a> <button class="linkbtn" id="reportBtn" type="button" style="display:none">রিপোর্ট করুন</button></footer>
   </div>
 
   <div class="lightbox" id="lb"><img alt=""></div>
 
-  <script src="js/config.js?v=4"></script>
-  <script src="js/common.js?v=4"></script>
-  <script src="js/view.js?v=4"></script>
+  <script src="js/config.js?v=5"></script>
+  <script src="js/common.js?v=5"></script>
+  <script src="js/view.js?v=5"></script>
   <script>document.querySelectorAll(".yr").forEach(function(e){e.textContent=new Date().getFullYear()});</script>
 </body>
 </html>

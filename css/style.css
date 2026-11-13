@@ -195,3 +195,49 @@ input::placeholder, textarea::placeholder { color: rgba(255,255,255,.45); }
 .thumb .cap { width: 100%; margin-top: 6px; padding: 6px 8px; font-size: .8rem; border-radius: 8px; }
 details.more { margin: 2px 0; }
 details.more summary { cursor: pointer; padding: 8px 0; font-weight: 600; }
+
+/* I ❤ YOU দৃশ্য */
+.love { text-align: center; display: flex; align-items: center; justify-content: center; gap: .35em; flex-wrap: wrap; position: relative; cursor: pointer; }
+.love .lw { font-size: clamp(2.6rem, 14vw, 5rem); font-weight: 700; letter-spacing: .06em; color: #fff; text-shadow: 0 0 24px var(--accent); opacity: 0; animation: loveIn .9s ease forwards; }
+.love .lw:last-of-type { animation-delay: 1.3s; }
+.love .lh { font-size: clamp(2.8rem, 15vw, 5.4rem); color: var(--accent); opacity: 0; filter: drop-shadow(0 0 18px var(--accent)); animation: loveIn .9s .6s ease forwards, beat 1.1s 1.5s ease-in-out infinite; }
+.love small { flex-basis: 100%; margin-top: 18px; font-size: .8rem; opacity: 0; animation: loveIn 1s 2s ease forwards; color: #fff; }
+@keyframes loveIn { from { opacity: 0; transform: translateY(14px) scale(.85); } to { opacity: .95; transform: none; } }
+@keyframes beat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.22); } }
+@media (prefers-reduced-motion: reduce) { .love .lw, .love .lh, .love small { animation: none; opacity: 1; } }
+
+/* সাইটের সাধারণ পাতা (about, blog ইত্যাদি) */
+.nav { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; justify-content: flex-end; font-size: .95rem; }
+.nav a:not(.btn) { color: #fff; text-decoration: none; opacity: .85; }
+.nav a:not(.btn):hover { opacity: 1; text-decoration: underline; }
+.page { max-width: 760px; margin: 0 auto; }
+.page h1 { font-size: clamp(1.7rem, 5vw, 2.4rem); margin: 6px 0 14px; line-height: 1.25; }
+.page h2 { font-size: 1.2rem; margin: 26px 0 8px; color: var(--accent); }
+.page p, .page li { opacity: .92; margin-bottom: 10px; }
+.page ul { padding-left: 1.3em; margin-bottom: 10px; }
+.page .form { margin-top: 18px; }
+.posts { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); margin-top: 18px; }
+.postcard { text-decoration: none; color: #fff; display: block; transition: transform .2s; }
+.postcard:hover { transform: translateY(-3px); }
+.postcard b { display: block; margin-bottom: 6px; }
+.sitefoot nav { display: flex; flex-wrap: wrap; gap: 6px 16px; justify-content: center; margin-bottom: 8px; }
+.sitefoot a, .copy a { color: #fff; opacity: .85; }
+.copy.fixed nav { display: none; }
+
+/* ল্যান্ডিং পেজ: galaxy ব্যাকগ্রাউন্ড ও আরও সুন্দর হিরো */
+canvas.bgfixed { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+body.landing .wrap, body.landing .copy { position: relative; z-index: 1; }
+body.landing { background: #04030f; }
+.hero h1 { background: linear-gradient(90deg, #fff, var(--accent), #fff); background-size: 200% auto; -webkit-background-clip: text; background-clip: text; color: transparent; animation: shine 6s linear infinite; }
+@keyframes shine { to { background-position: 200% center; } }
+.hero .btn { box-shadow: 0 0 28px rgba(255, 143, 177, .45); animation: glowpulse 2.4s ease-in-out infinite; }
+@keyframes glowpulse { 50% { box-shadow: 0 0 42px rgba(255, 143, 177, .8); } }
+.reveal { opacity: 0; transform: translateY(22px); transition: opacity .7s ease, transform .7s ease; }
+.reveal.in { opacity: 1; transform: none; }
+.tpl { transition: transform .25s, box-shadow .25s; }
+.tpl:hover { transform: translateY(-4px) scale(1.02); box-shadow: 0 10px 30px rgba(0,0,0,.35); }
+.mini { text-align: center; margin-top: 8px; }
+.faq details { background: rgba(255,255,255,.07); border-radius: 14px; padding: 12px 16px; margin-bottom: 10px; }
+.faq summary { cursor: pointer; font-weight: 600; }
+.faq p { margin-top: 8px; opacity: .9; }
+@media (prefers-reduced-motion: reduce) { .hero h1, .hero .btn { animation: none; } .reveal { opacity: 1; transform: none; transition: none; } }

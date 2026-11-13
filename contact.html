@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="bn">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>যোগাযোগ — Wishes</title>
+  <meta name="description" content="প্রশ্ন, মতামত বা letter মুছে ফেলার অনুরোধ জানান।">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css?v=5">
+</head>
+<body class="plain">
+  <div class="wrap">
+    <header class="top">
+      <a class="logo" href="index.html">💌 Wishes</a>
+      <nav class="nav"><a href="blog/index.html">ব্লগ</a><a href="about.html">পরিচিতি</a><a class="btn" href="create.html">Letter লিখুন</a></nav>
+    </header>
+    <main class="page">
+      <h1>যোগাযোগ</h1>
+      <p>প্রশ্ন, মতামত, সমস্যা বা letter মুছে ফেলার অনুরোধ থাকলে নিচের ফর্মে লিখুন। উত্তর চাইলে ইমেইল দিন। বার্তা ৯০ দিন রাখা হয়, বিস্তারিত <a href="privacy.html">গোপনীয়তা নীতিতে</a>।</p>
+      <form class="form card" id="cform" autocomplete="off">
+        <label>আপনার নাম (ঐচ্ছিক)<input id="cname" maxlength="60"></label>
+        <label>ইমেইল (ঐচ্ছিক, উত্তর পেতে)<input id="cmail" type="email" maxlength="120"></label>
+        <label>বার্তা<textarea id="cmsg" maxlength="2000" required placeholder="এখানে লিখুন..."></textarea></label>
+        <div class="actions"><button class="btn" id="csend" type="submit">পাঠান</button></div>
+        <p class="note" id="cstat"></p>
+      </form>
+      <script src="js/config.js?v=5"></script>
+      <script src="js/common.js?v=5"></script>
+      <script>
+        document.getElementById("cform").onsubmit = async function (ev) {
+          ev.preventDefault();
+          var st = document.getElementById("cstat"), btn = document.getElementById("csend");
+          var msg = document.getElementById("cmsg").value.trim();
+          if (!msg) { st.textContent = "বার্তা লিখুন।"; return; }
+          if (!supabaseReady()) { st.textContent = "ফর্ম এখন চালু নেই।"; return; }
+          btn.disabled = true; st.textContent = "পাঠানো হচ্ছে...";
+          try {
+            await sendContact(document.getElementById("cname").value.trim(), msg, document.getElementById("cmail").value.trim());
+            st.textContent = "ধন্যবাদ, বার্তা পাঠানো হয়েছে। ✓";
+            document.getElementById("cmsg").value = "";
+          } catch (e) { st.textContent = "পাঠানো যায়নি: " + e.message; }
+          btn.disabled = false;
+        };
+      </script>
+    </main>
+  </div>
+  <footer class="copy sitefoot"><nav><a href="about.html">পরিচিতি</a><a href="blog/index.html">ব্লগ</a><a href="privacy.html">গোপনীয়তা নীতি</a><a href="terms.html">শর্তাবলী</a><a href="contact.html">যোগাযোগ</a></nav>© <span class="yr">2026</span> Wishes. সর্বস্বত্ব সংরক্ষিত।</footer>
+  <script>document.querySelectorAll(".yr").forEach(function(e){e.textContent=new Date().getFullYear()});</script>
+</body>
+</html>
