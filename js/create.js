@@ -1,7 +1,7 @@
 (function () {
   const $ = (id) => document.getElementById(id);
   const params = new URLSearchParams(location.search);
-  let selected = TEMPLATES[params.get("t")] ? params.get("t") : "rose";
+  let selected = TEMPLATES[params.get("t")] && !TEMPLATES[params.get("t")].hidden ? params.get("t") : "rose";
   let lastLink = "";
 
   $("max").textContent = CFG.maxChars;
@@ -42,7 +42,7 @@
   const grid = $("tplGrid");
   function renderGrid() {
     grid.innerHTML = "";
-    Object.entries(TEMPLATES).forEach(([key, t]) => {
+    Object.entries(TEMPLATES).filter(([, t]) => !t.hidden).forEach(([key, t]) => {
       const d = document.createElement("div");
       d.className = "card tpl" + (key === selected ? " sel" : "");
       d.innerHTML = `<div class="sw" style="background:linear-gradient(160deg,${t.bg[0]},${t.bg[1]})">${t.emoji}</div><b>${t.name}</b>`;

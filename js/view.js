@@ -3,6 +3,10 @@
   const letterId = new URLSearchParams(location.hash.replace(/^#/, "")).get("id");
   const str = (v, d) => (typeof v === "string" && v.trim() ? v.trim() : d);
   let data;
+  const hashP = new URLSearchParams(location.hash.replace(/^#/, ""));
+  let adultOk = false;
+  // ১৮+ লিংকে letter আনার আগেই নিশ্চিতকরণ চাওয়া হয়
+  if (hashP.get("x") === "1") { await adultGate(); adultOk = true; }
 
   try {
     data = await loadLetter();
@@ -14,6 +18,21 @@
   }
 
   const key = TEMPLATES[data.t] ? data.t : "rose";
+  const isDesire = key === "desire";
+  if (isDesire) {
+    // লিংকের x=1 মুছে ফেললেও এখানে আবার আটকানো হয়, নিশ্চিতকরণ ছাড়া কিছুই দেখানো হয় না
+    if (!adultOk) { $("sWelcome").style.visibility = "hidden"; await adultGate(); $("sWelcome").style.visibility = ""; }
+    const ch = data.ch || {};
+    const ci = Number.isInteger(ch.c) && ch.c >= 0 && ch.c < DESIRE.chars.length ? ch.c : 0;
+    const oi = Number.isInteger(ch.o) && ch.o >= 0 && ch.o < 6 ? ch.o : 0;
+    const pi = Number.isInteger(ch.p) && ch.p >= 0 && ch.p < DESIRE.pals.length ? ch.p : 0;
+    const pal = DESIRE.pals[pi];
+    Object.assign(TEMPLATES.desire, { bg: pal.bg, accent: pal.accent, paper: pal.paper, ink: pal.ink });
+    $("chr").innerHTML = charSVG(ci, oi, pi);
+    document.body.classList.add("t-desire");
+    $("sfxBtn").onclick = () => { $("sfxBtn").textContent = Sfx.toggle() ? "🔊" : "🔇"; if (Sfx.on && opened) Sfx.startBeat(); };
+    document.querySelectorAll("#cta a").forEach((a) => { a.href = "naughty.html"; });
+  }
   applyTheme(key);
   startBackground($("bg"), key);
   if (key === "summer") document.body.classList.add("t-summer");
@@ -26,7 +45,7 @@
   photos.forEach((p) => { const im = new Image(); im.src = p.url; }); // আগে থেকে লোড
 
   // Welcome
-  $("wTitle").textContent = str(data.wt, "Welcome to Our Journey of Love");
+  $("wTitle").textContent = str(data.wt, isDesire ? "A Secret Meant Only For You" : "Welcome to Our Journey of Love");
   $("wSub").textContent = "To: " + data.to + "  ·  From: " + data.from;
   if (photos.length) $("wbg").style.backgroundImage = 'url("' + photos[0].url + '")';
   else $("wbg").classList.add("nophoto");
@@ -140,6 +159,7 @@
 
   $("beginBtn").onclick = () => {
     if (checkLock()) return;
+    if (isDesire) { Sfx.init(); Sfx.whoosh(); }
     if (photos.length) { go("sSlides"); setTimeout(() => slideTo(0), 60); }
     else toEnvelope();
   };
@@ -201,6 +221,7 @@
     if (opened) return;
     opened = true;
     $("env").classList.add("open");
+    if (isDesire) { Sfx.init(); Sfx.chime(); Sfx.startBeat(); }
     // "মোড বদল": summer থিমে letter খুললেই পুরো পরিবেশ উষ্ণ ও রোমান্টিক হয়ে যায়
     if (key === "summer") { document.body.classList.add("mood-on"); $("bg").dataset.mood = "1"; }
     $("hint").style.display = "none";
@@ -224,6 +245,7 @@
     function step() {
       if (i >= words.length) return finish();
       body.textContent += words[i++];
+      if (isDesire && /\S/.test(words[i - 1])) Sfx.tick();
       const letter = $("letter");
       letter.scrollTop = letter.scrollHeight;
       timer = setTimeout(step, /\s+/.test(words[i - 1]) ? 0 : per);

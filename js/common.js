@@ -57,6 +57,13 @@ Object.assign(TEMPLATES, {
   }
 });
 
+// গোপন ১৮+ টেমপ্লেট: গ্রিডে দেখানো হয় না (hidden), রঙ naughty.js-এর palette থেকে বসে
+TEMPLATES.desire = {
+  name: "Naughty Desire", emoji: "🔥", hidden: true,
+  bg: ["#2b0614", "#a3123f"], accent: "#ff6b8f",
+  paper: "#fff1f4", ink: "#4a0f24", particles: ["❤", "🔥", "✦"]
+};
+
 const CFG = window.WISHES_CONFIG || { supabase: {}, maxChars: 1200, maxPhotos: 6 };
 
 /* ---------- base64url ---------- */
@@ -181,10 +188,10 @@ async function saveLetter(data, blobs, onProgress) {
     const payload = Object.assign({}, data);
     if (photos.length) payload.photos = photos;
     const id = await sbRpc("create_letter", { p_data: payload });
-    return viewBase() + "#id=" + id;
+    return viewBase() + "#id=" + id + (data.t === "desire" ? "&x=1" : "");
   }
   if (blobs.length) throw new Error("ছবি যোগ করতে ডাটাবেস চালু থাকতে হবে");
-  return viewBase() + "#d=" + (await pack(data));
+  return viewBase() + "#d=" + (await pack(data)) + (data.t === "desire" ? "&x=1" : "");
 }
 
 // view.html-এর hash থেকে letter লোড করে

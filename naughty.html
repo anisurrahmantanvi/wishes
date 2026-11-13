@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="bn">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Naughty Desire (১৮+)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css?v=10">
+</head>
+<body class="t-desire-page">
+  <div class="wrap" id="app" hidden>
+    <header class="top">
+      <a class="logo" href="index.html">💌 Wishes</a>
+      <span class="badge18">🔞 ১৮+</span>
+    </header>
+    <h1 class="nd-title">Naughty Desire 🔥</h1>
+    <p class="note">প্রাপ্তবয়স্ক কাপলদের জন্য রোমান্টিক ও ইঙ্গিতবহ letter। কোনো নগ্নতা বা সরাসরি অশ্লীল কিছু নেই। সব চরিত্র প্রাপ্তবয়স্ক।</p>
+
+    <h2 class="section-title">১. চরিত্র বাছুন</h2>
+    <div class="nd-gal" id="chars"></div>
+
+    <h2 class="section-title" style="margin-top:24px">২. পোশাক ও রঙ</h2>
+    <div class="nd-gal nd-outfits" id="outfits"></div>
+    <div class="nd-pals" id="pals"></div>
+
+    <h2 class="section-title" style="margin-top:24px">৩. Letter লিখুন</h2>
+    <form class="form card" id="form" autocomplete="off">
+      <div class="row">
+        <label>যার জন্য (নাম)<input id="to" maxlength="40" required placeholder="প্রিয় মানুষের নাম"></label>
+        <label>আপনার নাম<input id="from" maxlength="40" required placeholder="আপনার নাম"></label>
+      </div>
+      <label>Welcome টাইটেল (ঐচ্ছিক)<input id="wt" maxlength="80" placeholder="A Secret Meant Only For You"></label>
+      <label>ফিতার লেখা (ঐচ্ছিক)<input id="rb" maxlength="30" placeholder="TONIGHT"></label>
+      <label>মেসেজ
+        <textarea id="msg" required placeholder="মনের কথা, আদর করে, রোমান্টিক করে লিখুন..."></textarea>
+        <span class="counter"><span id="count">0</span> / <span id="max"></span></span>
+      </label>
+      <label>কবে খুলবে (ঐচ্ছিক)<input type="datetime-local" id="unlock"></label>
+      <p class="note">এই টেমপ্লেটে ছবি আপলোড বন্ধ রাখা হয়েছে, নিরাপত্তার জন্য। শুধু আঁকা চরিত্র ও লেখা থাকে। প্রাপ্তবয়স্ক ও সম্মতিদাতা কাউকেই লিংক পাঠান। অশ্লীল বা হয়রানিমূলক লেখা <a href="terms.html" target="_blank" rel="noopener">শর্তাবলীতে</a> নিষিদ্ধ।</p>
+      <div class="actions">
+        <button type="button" class="btn ghost" id="previewBtn">Preview দেখুন</button>
+        <button type="submit" class="btn" id="genBtn">লিংক ও QR বানান</button>
+      </div>
+      <p class="note" id="err" style="color:#ffb3b3"></p>
+    </form>
+
+    <div class="result card" id="result">
+      <h3>আপনার Naughty Desire letter তৈরি! 🔥</h3>
+      <div class="linkbox"><input id="link" readonly><button class="btn" id="copyBtn" type="button">কপি</button></div>
+      <img id="qr" alt="QR কোড">
+      <div class="actions" style="margin-top:14px"><a class="btn ghost" id="openBtn" target="_blank" rel="noopener">খুলে দেখুন</a></div>
+      <p class="note">প্রাপক খুললে আগে ১৮+ নিশ্চিতকরণ দেখবে, তারপর letter। প্রাপক "নিজের letter বানান" চাপলে এই টেমপ্লেটেই নিজের letter বানাতে পারবে। letter প্রথমবার খোলার ১৫ দিন পর মুছে যায়।</p>
+    </div>
+  </div>
+  <footer class="copy sitefoot"><nav><a href="privacy.html">গোপনীয়তা নীতি</a><a href="terms.html">শর্তাবলী</a><a href="contact.html">যোগাযোগ</a></nav>© <span class="yr">2026</span> Wishes.</footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+  <script src="js/config.js?v=10"></script>
+  <script src="js/common.js?v=10"></script>
+  <script src="js/naughty.js?v=10"></script>
+  <script src="js/naughty-create.js?v=10"></script>
+  <script>document.querySelectorAll(".yr").forEach(function(e){e.textContent=new Date().getFullYear()});</script>
+</body>
+</html>
