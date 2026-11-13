@@ -352,7 +352,7 @@ function startBackground(canvas, key) {
     }
 
     for (const p of hearts) {
-      p.y -= p.v; p.sw += 0.01;
+      p.y -= p.v * (canvas.dataset.mood === "1" ? 2.4 : 1); p.sw += 0.01;
       const x = p.x + Math.sin(p.sw) * p.amp;
       ctx.globalAlpha = p.a;
       ctx.drawImage(heartSprite, x - p.s, p.y - p.s, p.s * 2, p.s * 2);
@@ -381,10 +381,17 @@ function startBackground(canvas, key) {
 
     if (t.mode === "summer") {
       const base = h * 0.9;
-      const ah = Math.min(130, h * 0.2), aw = ah * 0.46;
+      const mood = canvas.dataset.mood === "1";
+      const ah = Math.min(mood ? 190 : 130, h * (mood ? 0.27 : 0.2)), aw = ah * 0.46;
       if (art && art.complete && art.naturalWidth) {
-        ctx.globalAlpha = 0.92;
-        ctx.drawImage(art, w * 0.78 - aw / 2, base - ah * 0.82 + Math.sin(time * 1.2) * 1.5, aw, ah);
+        const ax = w * 0.8 - aw / 2 + (mood ? Math.sin(time * 1.6) * 5 : 0);
+        if (mood) {
+          const gl = ctx.createRadialGradient(ax + aw / 2, base - ah * 0.4, 4, ax + aw / 2, base - ah * 0.4, ah * 0.9);
+          gl.addColorStop(0, "rgba(255,90,140,.35)"); gl.addColorStop(1, "rgba(255,90,140,0)");
+          ctx.globalAlpha = 0.6 + 0.4 * Math.sin(time * 5.2); ctx.fillStyle = gl; ctx.fillRect(ax - ah, base - ah * 1.4, ah * 2.4, ah * 2);
+        }
+        ctx.globalAlpha = 0.95;
+        ctx.drawImage(art, ax, base - ah * 0.82 + Math.sin(time * 1.2) * 1.5, aw, ah);
       }
       ctx.globalAlpha = 1;
       [[0.35, 0.9, 14, "rgba(255,170,120,.28)", 1], [0.5, 1.3, 10, "rgba(255,110,150,.30)", 0], [0.25, 1.7, 7, "rgba(60,20,70,.45)", 2]].forEach(([f, sp, amp, col, k]) => {

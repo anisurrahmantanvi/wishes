@@ -16,6 +16,7 @@
   const key = TEMPLATES[data.t] ? data.t : "rose";
   applyTheme(key);
   startBackground($("bg"), key);
+  if (key === "summer") document.body.classList.add("t-summer");
 
   // ছবি: শুধু নিজের bucket-এর যাচাই-করা URL, ক্যাপশন আলাদা করে মিলিয়ে নিই
   const caps = Array.isArray(data.caps) ? data.caps : [];
@@ -184,6 +185,8 @@
     if (opened) return;
     opened = true;
     $("env").classList.add("open");
+    // "মোড বদল": summer থিমে letter খুললেই পুরো পরিবেশ উষ্ণ ও রোমান্টিক হয়ে যায়
+    if (key === "summer") { document.body.classList.add("mood-on"); $("bg").dataset.mood = "1"; }
     $("hint").style.display = "none";
     burst();
     // flap উল্টায় -> letter উঠে আসে -> envelope মিলিয়ে যায় -> পুরো letter ফোটে
