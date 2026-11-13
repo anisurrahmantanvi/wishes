@@ -3,9 +3,9 @@
 
 const DESIRE = {
   pals: [
-    { name: "Crimson", bg: ["#2b0614", "#a3123f"], accent: "#ff6b8f", paper: "#fff1f4", ink: "#4a0f24" },
-    { name: "Violet", bg: ["#14062b", "#6a1fa3"], accent: "#d28bff", paper: "#f7f0ff", ink: "#2a1050" },
-    { name: "Noir Gold", bg: ["#0d0a06", "#5c4210"], accent: "#ffcf6b", paper: "#fffaf0", ink: "#3b2a07" }
+    { name: "Romantic Red", bg: ["#3a0a1f", "#c4204f"], accent: "#ff8fb1", paper: "#fff1f4", ink: "#4a0f24" },
+    { name: "Rose Blush", bg: ["#3d0f2e", "#e0508a"], accent: "#ffc2d9", paper: "#fff3f8", ink: "#4a1034" },
+    { name: "Sweet Peach", bg: ["#4a1626", "#ff8a6a"], accent: "#ffd6bf", paper: "#fff6f0", ink: "#4a1c1c" }
   ],
   // age শুধু দেখানোর জন্য: সবাই ২৫ বা তার বেশি
   chars: [
