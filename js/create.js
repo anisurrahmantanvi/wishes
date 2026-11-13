@@ -67,6 +67,7 @@
       if (v) data[k] = v;
     });
     if ($("love").checked) data.love = true;
+    if ($("kiss").checked) data.kiss = true;
     const u = $("unlock").value;
     if (u) data.unlock = new Date(u).getTime();
     return data;

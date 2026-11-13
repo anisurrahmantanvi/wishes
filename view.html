@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;700&family=Great+Vibes&family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=8">
+  <link rel="stylesheet" href="css/style.css?v=9">
 </head>
 <body>
   <div class="stage">
@@ -41,6 +41,43 @@
     <!-- দৃশ্য ২.৫: I ❤ YOU -->
     <section class="scene" id="sLove" aria-label="I love you">
       <div class="love"><span class="lw">I</span><span class="lh">❤</span><span class="lw">YOU</span><small>ট্যাপ করলে এগিয়ে যাবে</small></div>
+    </section>
+
+    <!-- দৃশ্য ২.৬: anime-style চুমুর মুহূর্ত (ঐচ্ছিক) -->
+    <section class="scene" id="sKiss" aria-label="Kiss moment">
+      <div class="kiss">
+        <svg class="kiss-svg" viewBox="0 0 300 230" xmlns="http://www.w3.org/2000/svg" aria-label="কাপলের চুমুর অ্যানিমেশন">
+        <defs><radialGradient id="kg" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#ff7eb3" stop-opacity=".55"/><stop offset="1" stop-color="#ff7eb3" stop-opacity="0"/></radialGradient></defs>
+        <circle cx="150" cy="105" r="120" fill="url(#kg)" class="kglow"/>
+        <g class="boy">
+          <path d="M138 230c2-48 18-66 48-70 34 4 50 26 52 70z" fill="#33407a"/>
+          <path d="M170 160l16 22 18-22z" fill="#fff"/><path d="M186 182l-5 14h10z" fill="#d6336c"/>
+          <rect x="174" y="136" width="22" height="26" rx="8" fill="#ffd9c4"/>
+          <path d="M153 74c-4 30 2 58 20 64 20 4 38-12 38-44 0-26-14-44-38-44-12 0-18 8-20 24z" fill="#ffe0cf"/>
+          <path d="M150 82c-6-34 14-56 44-52 24 4 28 22 24 44-4-14-12-22-26-24 0 8-6 14-14 14-12 0-14 8-18 18z" fill="#263466"/>
+          <path d="M150 78c-14-8-20 2-24 12 10-4 16-2 22 6z" fill="#263466"/>
+          <path d="M164 100q6-5 12 0" stroke="#3a2530" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+          <path d="M164 100l-3-3" stroke="#3a2530" stroke-width="1.6" stroke-linecap="round"/>
+          <ellipse cx="172" cy="116" rx="8" ry="4.5" fill="#ff8fa3" class="blush"/><path d="M153 101q-4 3 0 6" stroke="#e8b7a0" stroke-width="2" fill="none" stroke-linecap="round"/>
+        </g>
+        <g class="girl">
+          <path d="M62 230c2-46 20-66 50-70 32 4 48 24 50 70z" fill="#fff"/>
+          <path d="M88 168l24 26 24-26 14 8c-6-12-18-18-38-18s-32 6-38 18z" fill="#2c3f7a"/>
+          <path d="M107 188l5 10 5-10-5-5z" fill="#e4376d"/>
+          <rect x="102" y="136" width="22" height="26" rx="8" fill="#ffd9c4"/>
+          <path d="M70 100c-8-50 20-78 56-72 30 6 36 40 26 90-6 30-30 40-44 22-10-12-14-24-12-40z" fill="#ff9fc7"/>
+          <path d="M92 78c0 30 4 58 22 64 20 2 36-12 36-44 0-26-12-44-36-44-14 0-22 8-22 24z" fill="#ffe0cf"/>
+          <path d="M84 84c-4-30 18-52 46-48 26 4 28 22 22 42-6-14-14-22-28-24-4 10-10 16-20 16-10 0-14 6-20 14z" fill="#ff9fc7"/>
+          <path d="M120 100q6-5 12 0" stroke="#3a2530" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+          <path d="M120 100l-3-3M126 96l-1-4" stroke="#3a2530" stroke-width="1.6" stroke-linecap="round"/>
+          <ellipse cx="124" cy="116" rx="8" ry="4.5" fill="#ff8fa3" class="blush"/><path d="M151 101q5 3 0 6" stroke="#e8b7a0" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <path d="M84 62l-12-10 4 14-10 6 14 0z" fill="#e4376d"/><path d="M84 62l10-12-4 14 10 6-14 0z" fill="#e4376d"/>
+        </g>
+        <path d="M146 112c0-4 5-4 5 0 0-4 5-4 5 0 0 3-5 7-5 7s-5-4-5-7z" fill="#e4376d" class="lips"/>
+      </svg>
+        <div class="kheart" aria-hidden="true"><i>❤</i><i>💗</i><i>❤</i><i>💖</i><i>❤</i><i>💗</i></div>
+        <small>ট্যাপ করলে এগিয়ে যাবে</small>
+      </div>
     </section>
 
     <!-- দৃশ্য ৩: envelope -->
@@ -80,9 +117,9 @@
 
   <div class="lightbox" id="lb"><img alt=""></div>
 
-  <script src="js/config.js?v=8"></script>
-  <script src="js/common.js?v=8"></script>
-  <script src="js/view.js?v=8"></script>
+  <script src="js/config.js?v=9"></script>
+  <script src="js/common.js?v=9"></script>
+  <script src="js/view.js?v=9"></script>
   <script>document.querySelectorAll(".yr").forEach(function(e){e.textContent=new Date().getFullYear()});</script>
 </body>
 </html>

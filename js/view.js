@@ -149,16 +149,32 @@
   // "I ❤ YOU" মুহূর্ত: ৩ সেকেন্ডে নিজে এগোয়, ট্যাপ করলে সঙ্গে সঙ্গে
   let loveTimer = null;
   function toEnvelope() {
-    if (data.love !== true) return go("sEnvelope");
+    if (data.love === true) return showLove();
+    if (data.kiss === true) return showKiss();
+    go("sEnvelope");
+  }
+  function showLove() {
     go("sLove");
     clearTimeout(loveTimer);
     loveTimer = setTimeout(skipLove, 3200);
   }
   function skipLove() {
     clearTimeout(loveTimer);
-    if ($("sLove").classList.contains("show")) go("sEnvelope");
+    if (!$("sLove").classList.contains("show")) return;
+    if (data.kiss === true) showKiss(); else go("sEnvelope");
   }
   $("sLove").addEventListener("click", skipLove);
+  let kissTimer = null;
+  function showKiss() {
+    go("sKiss");
+    clearTimeout(kissTimer);
+    kissTimer = setTimeout(skipKiss, 6500);
+  }
+  function skipKiss() {
+    clearTimeout(kissTimer);
+    if ($("sKiss").classList.contains("show")) go("sEnvelope");
+  }
+  $("sKiss").addEventListener("click", skipKiss);
 
   /* ---------- envelope ও letter ---------- */
   // পাপড়ি ও হার্ট ছড়িয়ে পড়ে

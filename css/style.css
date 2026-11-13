@@ -251,3 +251,24 @@ body.mood-on .stage::after { opacity: 1; animation: heartbeat 1.1s ease-in-out i
 body.mood-on .letter { border-color: rgba(255,150,190,.5); box-shadow: 0 0 40px rgba(255,70,130,.35), 0 12px 40px rgba(0,0,0,.35); background: rgba(80,0,35,.28); }
 @keyframes heartbeat { 0%, 100% { transform: scale(1); } 15% { transform: scale(1.04); } 30% { transform: scale(1); } 45% { transform: scale(1.06); } }
 @media (prefers-reduced-motion: reduce) { body.mood-on .stage::after { animation: none; } }
+
+/* anime-style চুমুর দৃশ্য */
+.kiss { position: relative; width: min(420px, 94vw); text-align: center; cursor: pointer; }
+.kiss-svg { width: 100%; height: auto; overflow: visible; filter: drop-shadow(0 8px 24px rgba(0,0,0,.35)); }
+.kiss small { display: block; margin-top: 6px; font-size: .8rem; opacity: .7; color: #fff; }
+.kiss .boy { transform: translateX(46px); animation: kBoy 2s .4s cubic-bezier(.5,0,.2,1) forwards, kBob 3s 2.4s ease-in-out infinite; }
+.kiss .girl { transform: translateX(-46px); animation: kGirl 2s .4s cubic-bezier(.5,0,.2,1) forwards, kBob 3s 2.4s ease-in-out infinite; }
+.kiss .blush { opacity: 0; animation: kFade 1s 2s ease forwards; }
+.kiss .lips { opacity: 0; transform-origin: 150px 112px; animation: kFade .4s 2.2s ease forwards, kBeat 1s 2.6s ease-in-out infinite; }
+.kiss .kglow { opacity: 0; animation: kFade 1.5s 2s ease forwards; }
+.kheart i { position: absolute; left: 50%; top: 38%; font-style: normal; font-size: 22px; opacity: 0; animation: kUp 2.8s ease-out infinite; }
+.kheart i:nth-child(1) { animation-delay: 2.3s; --dx: -40px; } .kheart i:nth-child(2) { animation-delay: 2.7s; --dx: 20px; font-size: 28px; }
+.kheart i:nth-child(3) { animation-delay: 3.1s; --dx: 55px; } .kheart i:nth-child(4) { animation-delay: 3.4s; --dx: -15px; font-size: 30px; }
+.kheart i:nth-child(5) { animation-delay: 3.8s; --dx: -60px; } .kheart i:nth-child(6) { animation-delay: 4.1s; --dx: 35px; }
+@keyframes kBoy { to { transform: translateX(1px); } }
+@keyframes kGirl { to { transform: translateX(-1px); } }
+@keyframes kBob { 0%, 100% { translate: 0 0; } 50% { translate: 0 -3px; } }
+@keyframes kFade { to { opacity: 1; } }
+@keyframes kBeat { 50% { transform: scale(1.35); } }
+@keyframes kUp { 0% { opacity: 0; transform: translate(0, 0) scale(.6); } 15% { opacity: 1; } 100% { opacity: 0; transform: translate(var(--dx), -150px) scale(1.2); } }
+@media (prefers-reduced-motion: reduce) { .kiss .boy { animation: none; transform: translateX(1px); } .kiss .girl { animation: none; transform: translateX(-1px); } .kiss .blush, .kiss .lips, .kiss .kglow { animation: none; opacity: 1; } .kheart { display: none; } }
