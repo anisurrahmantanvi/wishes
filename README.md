@@ -40,6 +40,7 @@ Project: `wishes` (Supabase)। `js/config.js`-এ project URL ও publishable k
 ## Naughty Desire (১৮+, গোপন)
 - ঢোকার পথ: landing পেজের footer-এ `©` বছরের লেখায় ৫ বার ট্যাপ, বা সরাসরি `naughty.html`। কোনো মেনু/সাইটম্যাপে নেই, `noindex`।
 - `js/naughty.js`: ৬ প্রাপ্তবয়স্ক চরিত্র (নিজের আঁকা SVG, ২৫+ বয়স), ৬টা পোশাক (ছেলে/মেয়ে আলাদা), ৩ romantic palette (Romantic Red, Rose Blush, Sweet Peach), `adultGate()` (বয়স ও সম্মতি, দুই টিক), Web Audio সাউন্ড (chime, tick, heartbeat; কোনো ফাইল নেই, 🔊 বাটনে বন্ধ করা যায়)।
+- চরিত্রের নাম ব্যবহারকারী নিজে বসায় (`cn`, সর্বোচ্চ ৩০ অক্ষর, ঐচ্ছিক)। চরিত্র আঁকায় চকচকে চোখ, চুলের ঝিলিক, অলংকার ও ছায়া আছে।
 - `js/naughty-create.js`: চরিত্র/পোশাক/রঙ বাছা, letter, preview, লিংক+QR। ছবি আপলোড বন্ধ।
 - লিংকে `&x=1` থাকলে letter আনার আগেই গেট আসে। `t=desire` হলে `x=1` না থাকলেও গেট আসে। `get_letter`/`create_letter`-এ `ch` (c 0-5, o 0-7, p 0-2) যাচাই করে সংরক্ষিত হয়।
 - প্রাপক "নিজের letter বানান" চাপলে `naughty.html`-এ যায়।
