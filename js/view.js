@@ -29,6 +29,12 @@
     const pal = DESIRE.pals[pi];
     Object.assign(TEMPLATES.desire, { bg: pal.bg, accent: pal.accent, paper: pal.paper, ink: pal.ink });
     $("chr").innerHTML = charSVG(ci, oi, pi);
+    if (typeof data.cn === "string" && data.cn.trim()) {
+      const tag = document.createElement("div");
+      tag.className = "chrname";
+      tag.textContent = data.cn.trim().slice(0, 30);
+      $("chr").appendChild(tag);
+    }
     document.body.classList.add("t-desire");
     $("sfxBtn").onclick = () => { $("sfxBtn").textContent = Sfx.toggle() ? "🔊" : "🔇"; if (Sfx.on && opened) Sfx.startBeat(); };
     document.querySelectorAll("#cta a").forEach((a) => { a.href = "naughty.html"; });

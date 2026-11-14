@@ -296,7 +296,7 @@ body.t-desire-page { background: linear-gradient(160deg, #14030a, #3a0a1f 60%, #
 .nd-pal.sel { border-color: #fff; }
 
 /* view পাতায় desire মোড */
-#chr { position: absolute; right: 3vw; bottom: 26px; width: min(38vw, 170px); z-index: 1; pointer-events: none; filter: drop-shadow(0 0 22px var(--accent)); display: none; animation: chrIn 1.2s ease both; }
+#chr { position: absolute; right: 3vw; bottom: 42px; width: min(38vw, 170px); z-index: 1; pointer-events: none; filter: drop-shadow(0 0 22px var(--accent)); display: none; animation: chrIn 1.2s ease both; }
 body.t-desire #chr { display: block; }
 #chr svg { width: 100%; height: auto; display: block; }
 body.t-desire .letter { max-height: 66vh; align-self: start; margin-top: 3vh; }
@@ -306,3 +306,5 @@ body.t-desire .letter { border-color: rgba(255,150,190,.45); box-shadow: 0 0 40p
 body.t-desire .sfxbtn { display: block; }
 @keyframes chrIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: reduce) { body.t-desire .stage::after, #chr { animation: none; } }
+
+.chrname { text-align: center; margin-top: 4px; font-weight: 700; font-size: .95rem; color: #fff; text-shadow: 0 1px 8px rgba(0,0,0,.7), 0 0 14px var(--accent); }

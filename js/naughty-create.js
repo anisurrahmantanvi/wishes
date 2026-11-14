@@ -21,7 +21,7 @@
     DESIRE.chars.forEach((c, i) => {
       const d = document.createElement("button");
       d.type = "button"; d.className = "nd-card" + (i === ci ? " sel" : "");
-      d.innerHTML = charSVG(i, oi, pi) + "<b>" + c.name + "</b><small>" + c.age + " বছর</small>";
+      d.innerHTML = charSVG(i, oi, pi) + "<b>চরিত্র " + (i + 1) + "</b><small>প্রাপ্তবয়স্ক</small>";
       d.onclick = () => { ci = i; render(); };
       $("chars").appendChild(d);
     });
@@ -47,6 +47,7 @@
 
   function collect() {
     const d = { t: "desire", ch: { c: ci, o: oi, p: pi }, to: $("to").value.trim(), from: $("from").value.trim(), msg: $("msg").value.trim() };
+    if ($("cn").value.trim()) d.cn = $("cn").value.trim().slice(0, 30);
     if ($("wt").value.trim()) d.wt = $("wt").value.trim();
     if ($("rb").value.trim()) d.rb = $("rb").value.trim();
     if ($("unlock").value) d.unlock = new Date($("unlock").value).getTime();
