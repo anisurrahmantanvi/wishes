@@ -91,9 +91,9 @@
   if (letterId && supabaseReady()) {
     $("reportBtn").style.display = "inline";
     $("reportBtn").onclick = async () => {
-      if (!confirm("এই letter আপত্তিকর মনে হলে রিপোর্ট করুন। চালিয়ে যাবেন?")) return;
-      try { await reportLetter(letterId, "reported from view page"); alert("ধন্যবাদ, রিপোর্ট জমা হয়েছে।"); }
-      catch (e) { alert("রিপোর্ট পাঠানো যায়নি, একটু পরে আবার চেষ্টা করুন।"); }
+      if (!confirm(T("এই letter আপত্তিকর মনে হলে রিপোর্ট করুন। চালিয়ে যাবেন?"))) return;
+      try { await reportLetter(letterId, "reported from view page"); alert(T("ধন্যবাদ, রিপোর্ট জমা হয়েছে।")); }
+      catch (e) { alert(T("রিপোর্ট পাঠানো যায়নি, একটু পরে আবার চেষ্টা করুন।")); }
     };
   }
 

@@ -316,3 +316,10 @@ body.t-desire .sfxbtn { display: block; }
 .ptimer { position: absolute; left: 0; right: 0; top: 10px; text-align: center; font-size: .8rem; opacity: .85; color: #fff; pointer-events: none; }
 .pnote { margin-top: 10px; font-size: .85rem; opacity: .85; text-align: center; color: #fff; }
 body.in-slides #chr { display: none; }
+
+/* ভাষা বদলের বাটন */
+.langbtn{position:fixed;top:10px;left:10px;z-index:9999;padding:5px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.35);background:rgba(20,10,30,.55);color:#fff;font:600 13px/1 inherit;font-family:inherit;cursor:pointer;backdrop-filter:blur(6px)}
+.langbtn:hover{background:rgba(20,10,30,.8)}
+body.plain .langbtn,body.light .langbtn{background:rgba(255,255,255,.85);color:#333;border-color:rgba(0,0,0,.2)}
+
+.nav .langbtn,header.top>.langbtn{position:static;margin-left:4px;font-size:13px;padding:6px 12px;vertical-align:middle}

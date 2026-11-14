@@ -8,8 +8,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;700&family=Great+Vibes&family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=15">
-  <script src="js/fit.js?v=15"></script>
+  <link rel="stylesheet" href="css/style.css?v=16">
+  <script src="js/fit.js?v=16"></script>
+  <script defer src="js/i18n-en.js?v=16"></script>
+  <script defer src="js/i18n.js?v=16"></script>
 </head>
 <body>
   <div class="stage">
@@ -19,10 +21,10 @@
 
     <!-- দৃশ্য ১: Welcome -->
     <section class="scene show" id="sWelcome">
-      <div class="wbg" id="wbg"></div>
+      <div class="wbg" id="wbg" data-notr></div>
       <div class="wcontent">
-        <h1 class="wtitle" id="wTitle"></h1>
-        <p class="wsub" id="wSub"></p>
+        <h1 class="wtitle" id="wTitle" data-notr></h1>
+        <p class="wsub" id="wSub" data-notr></p>
         <button class="btn" id="beginBtn" type="button">আমাদের গল্প শুরু করুন</button>
         <p class="locked" id="locked"></p>
       </div>
@@ -31,7 +33,7 @@
     <!-- দৃশ্য ২: ছবির স্লাইডশো (ছবি থাকলে) -->
     <section class="scene" id="sSlides">
       <div class="slides-wrap">
-        <div class="track" id="track"></div>
+        <div class="track" id="track" data-notr></div>
         <div class="dots" id="dots"></div>
         <div class="slide-actions">
           <button class="btn ghost" id="backBtn" type="button">← Back</button>
@@ -91,7 +93,7 @@
           <div class="mail-paper"><span>💌</span><i></i><i></i><i class="s"></i></div>
           <div class="mail-front"></div>
           <div class="mail-flap"></div>
-          <div class="mail-label"><small id="lblTo"></small><small id="lblFrom"></small></div>
+          <div class="mail-label"><small id="lblTo" data-notr></small><small id="lblFrom" data-notr></small></div>
           <div class="tap" aria-hidden="true"><b>👆</b></div>
         </div>
         <div class="mail-shadow"></div>
@@ -101,15 +103,15 @@
 
     <!-- দৃশ্য ৪: letter -->
     <article class="letter" id="letter">
-      <div class="ribbon" id="ribbon" hidden></div>
+      <div class="ribbon" id="ribbon" data-notr hidden></div>
       <button class="skip" id="skip" type="button">সব দেখান</button>
       <div class="lhead" id="lhead" hidden>
-        <h2 class="ltitle" id="lTitle"></h2>
-        <p class="lsub" id="lSub"></p>
+        <h2 class="ltitle" id="lTitle" data-notr></h2>
+        <p class="lsub" id="lSub" data-notr></p>
       </div>
-      <div class="to" id="to"></div>
-      <div class="body cursor" id="body"></div>
-      <div class="from" id="from"></div>
+      <div class="to" id="to" data-notr></div>
+      <div class="body cursor" id="body" data-notr></div>
+      <div class="from" id="from" data-notr></div>
     </article>
 
     <div class="footer-cta" id="cta" style="position:absolute;bottom:44px;left:0;right:0;z-index:3">
@@ -120,10 +122,10 @@
 
   <div class="lightbox" id="lb"><img alt=""></div>
 
-  <script src="js/config.js?v=15"></script>
-  <script src="js/common.js?v=15"></script>
-  <script src="js/naughty.js?v=15"></script>
-  <script src="js/view.js?v=15"></script>
+  <script src="js/config.js?v=16"></script>
+  <script src="js/common.js?v=16"></script>
+  <script src="js/naughty.js?v=16"></script>
+  <script src="js/view.js?v=16"></script>
   <script>document.querySelectorAll(".yr").forEach(function(e){e.textContent=new Date().getFullYear()});</script>
 </body>
 </html>

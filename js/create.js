@@ -146,7 +146,7 @@
     g.textAlign = "center"; g.fillStyle = "#fff";
     g.font = "90px serif"; g.fillText("💌", W / 2, 170);
     g.font = "bold 44px 'Hind Siliguri', sans-serif";
-    g.fillText("আপনার জন্য একটা সারপ্রাইজ", W / 2, 260);
+    g.fillText(T("আপনার জন্য একটা সারপ্রাইজ"), W / 2, 260);
     g.font = "30px 'Hind Siliguri', sans-serif";
     g.fillStyle = t.accent;
     g.fillText("To: " + $("to").value.trim(), W / 2, 315);
@@ -157,7 +157,7 @@
       g.drawImage(img, 170, 370, 380, 380);
       g.fillStyle = "#fff";
       g.font = "28px 'Hind Siliguri', sans-serif";
-      g.fillText("স্ক্যান করে letter খুলুন", W / 2, 830);
+      g.fillText(T("স্ক্যান করে letter খুলুন"), W / 2, 830);
       const a = document.createElement("a");
       a.download = "wishes-qr-card.png";
       a.href = c.toDataURL("image/png");
