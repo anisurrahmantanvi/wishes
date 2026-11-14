@@ -38,7 +38,7 @@ Project: `wishes` (Supabase)। `js/config.js`-এ project URL ও publishable k
 টেমপ্লেট: rose, galaxy, night, sunset, blossom, gold, romantic, anniversary, newyear (আতশবাজি), summer (সমুদ্রের ঢেউ ও ছোট্ট আঁকা মূর্তি) (ডাটাবেস এগুলোই গ্রহণ করে)। দৃশ্যের ক্রম: Welcome → স্লাইডশো (ছবি থাকলে) → "I ❤ YOU" ও anime-style চুমুর দৃশ্য (দুটোই ঐচ্ছিক, create পাতায় টিক দিলে; I ❤ YOU, create পাতায় টিক দিলে; ৩ সেকেন্ড, ট্যাপে স্কিপ) → envelope → letter।
 
 ## Naughty Desire (১৮+, গোপন)
-- ঢোকার পথ: landing পেজের footer-এ `©` বছরের লেখায় ৫ বার ট্যাপ, বা সরাসরি `naughty.html`। কোনো মেনু/সাইটম্যাপে নেই, `noindex`।
+- ঢোকার পথ: create পাতার টেমপ্লেট গ্রিডের শেষ কার্ড "🔞 ১৮+ টেমপ্লেট", landing পেজের footer-এ `©` বছরের লেখায় ৫ বার ট্যাপ, বা সরাসরি `naughty.html`। কোনো মেনু/সাইটম্যাপে নেই, `noindex`।
 - `js/naughty.js`: ৬ প্রাপ্তবয়স্ক চরিত্র (নিজের আঁকা SVG, ২৫+ বয়স), ৬টা পোশাক (ছেলে/মেয়ে আলাদা), ৩ romantic palette (Romantic Red, Rose Blush, Sweet Peach), `adultGate()` (বয়স ও সম্মতি, দুই টিক), Web Audio সাউন্ড (chime, tick, heartbeat; কোনো ফাইল নেই, 🔊 বাটনে বন্ধ করা যায়)।
 - চরিত্রের নাম ব্যবহারকারী নিজে বসায় (`cn`, সর্বোচ্চ ৩০ অক্ষর, ঐচ্ছিক)। চরিত্র আঁকায় চকচকে চোখ, চুলের ঝিলিক, অলংকার ও ছায়া আছে।
 - `js/naughty-create.js`: চরিত্র/পোশাক/রঙ বাছা, letter, ছবি (সর্বোচ্চ ৬, ক্যাপশনসহ, নিশ্চিতকরণ টিক বাধ্যতামূলক; প্রাইভেট bucket `letter-photos-private`, Edge Function `photo-urls` প্রথম দেখা থেকে ১৫ মিনিটের signed URL দেয়, `cleanup` প্রতি ৩০ মিনিটে (cron `wishes-daily-cleanup`, নামটা পুরনো) সময়-শেষ ছবি মোছে; `letters.first_photos_at`, `photos_purged`, `data.pp`), preview, লিংক+QR। ছবিতে নগ্নতা আটকানোর স্বয়ংক্রিয় ব্যবস্থা নেই, শুধু নিয়ম, টিক ও রিপোর্ট।

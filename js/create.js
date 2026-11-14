@@ -49,6 +49,13 @@
       d.onclick = () => { selected = key; applyTheme(key); renderGrid(); };
       grid.appendChild(d);
     });
+    // ১৮+ টেমপ্লেটের সহজ প্রবেশপথ: ক্লিক করলে আগে বয়সের নিশ্চিতকরণ চায়, ভেতরের কিছুই এখানে দেখানো হয় না
+    const nd = document.createElement("a");
+    nd.className = "card tpl";
+    nd.href = "naughty.html";
+    nd.style.cssText = "text-decoration:none;color:#fff";
+    nd.innerHTML = '<div class="sw" style="background:linear-gradient(160deg,#3a0a1f,#c4204f)">🔞</div><b>১৮+ টেমপ্লেট</b>';
+    grid.appendChild(nd);
   }
   applyTheme(selected);
   renderGrid();
