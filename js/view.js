@@ -45,14 +45,33 @@
 
   // ছবি: শুধু নিজের bucket-এর যাচাই-করা URL, ক্যাপশন আলাদা করে মিলিয়ে নিই
   const caps = Array.isArray(data.caps) ? data.caps : [];
-  const photos = (Array.isArray(data.photos) ? data.photos : []).slice(0, 6)
-    .map((p, i) => ({ url: photoUrl(p), cap: typeof caps[i] === "string" ? caps[i].trim() : "" }))
-    .filter((p) => p.url);
+  const capOf = (i) => (typeof caps[i] === "string" ? caps[i].trim() : "");
+  let privSeconds = 0, privEnded = false;
+  let photos;
+  if (data.pp === true) {
+    // প্রাইভেট ছবি: প্রথম দেখা থেকে ১৫ মিনিট, সার্ভার গোপন লিংক দেয়
+    let urls = [];
+    if (!data.locked) {
+      try { const r = await fetchPrivatePhotos(hashP.get("id")); urls = r.urls; privSeconds = r.seconds; } catch (e) { urls = []; }
+    }
+    photos = urls.map((u, i) => ({ url: u, cap: capOf(i) })).filter((p) => p.url);
+    privEnded = !data.locked && !photos.length && (data.photoCount || 0) > 0;
+  } else {
+    photos = (Array.isArray(data.photos) ? data.photos : []).slice(0, 6)
+      .map((p, i) => ({ url: photoUrl(p), cap: capOf(i) }))
+      .filter((p) => p.url);
+  }
   photos.forEach((p) => { const im = new Image(); im.src = p.url; }); // আগে থেকে লোড
 
   // Welcome
   $("wTitle").textContent = str(data.wt, isDesire ? "A Secret Meant Only For You" : "Welcome to Our Journey of Love");
   $("wSub").textContent = "To: " + data.to + "  ·  From: " + data.from;
+  if (privEnded) {
+    const n = document.createElement("p");
+    n.className = "pnote";
+    n.textContent = "ছবিগুলোর ১৫ মিনিটের সময় শেষ হয়েছে, তাই আর দেখা যাচ্ছে না। লেখাটা পড়া যাবে।";
+    $("wSub").after(n);
+  }
   if (photos.length) $("wbg").style.backgroundImage = 'url("' + photos[0].url + '")';
   else $("wbg").classList.add("nophoto");
 
@@ -106,6 +125,7 @@
   function go(id) {
     document.querySelectorAll(".scene").forEach((s) => s.classList.remove("show"));
     $(id).classList.add("show");
+    document.body.classList.toggle("in-slides", id === "sSlides"); // স্লাইডশোর বাটন চরিত্রের পেছনে ঢাকা পড়ে না
   }
 
   /* ---------- স্লাইডশো ---------- */
@@ -117,7 +137,9 @@
     c.style.setProperty("--r", (i % 2 ? 1.5 : -1.5) + "deg");
     const im = document.createElement("img");
     im.src = p.url; im.alt = "ছবি " + (i + 1);
+    im.draggable = false;
     c.appendChild(im);
+    if (data.pp === true) c.dataset.wm = "Wishes · " + String(data.to).slice(0, 20);
     if (p.cap) {
       const cp = document.createElement("figcaption");
       cp.className = "cap"; cp.textContent = p.cap;
@@ -128,6 +150,16 @@
     dots.appendChild(document.createElement("i"));
   });
   $("lb").onclick = () => $("lb").classList.remove("show");
+  if (data.pp === true) {
+    // সাধারণ "ছবি সেভ" কঠিন করা (স্ক্রিনশট আটকায় না)
+    [track, $("lb")].forEach((el) => el.addEventListener("contextmenu", (e) => e.preventDefault()));
+    if (photos.length && privSeconds > 0) {
+      const t = document.createElement("p");
+      t.className = "ptimer";
+      t.textContent = "🔒 এই ছবিগুলো আর প্রায় " + Math.max(1, Math.ceil(privSeconds / 60)) + " মিনিট দেখা যাবে।";
+      $("sSlides").appendChild(t);
+    }
+  }
   if (photos.length < 2) $("playBtn").style.display = "none";
 
   function setDot(i) {

@@ -140,6 +140,21 @@ function photoUrl(path) {
   return SB.url + "/storage/v1/object/public/letter-photos/" + path;
 }
 
+// প্রাইভেট ছবি: সার্ভার থেকে সময়-সীমিত (প্রথম দেখা থেকে ১৫ মিনিট) গোপন লিংক আনে
+const PRIV_PREFIX = () => SB.url + "/storage/v1/object/sign/letter-photos-private/";
+async function fetchPrivatePhotos(id) {
+  if (!supabaseReady() || !/^[0-9a-f]{10}$/.test(id || "")) return { urls: [], seconds: 0 };
+  const res = await fetch(SB.url + "/functions/v1/photo-urls", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", apikey: SB.key },
+    body: JSON.stringify({ id })
+  });
+  if (!res.ok) throw new Error("photo-urls " + res.status);
+  const j = await res.json();
+  const urls = (Array.isArray(j.urls) ? j.urls : []).map((u) => (typeof u === "string" && u.startsWith(PRIV_PREFIX()) ? u : ""));
+  return { urls, seconds: Number(j.seconds) || 0 };
+}
+
 // ছবি ব্রাউজারেই ছোট করে JPEG বানায় (স্টোরেজ ও ডেটা বাঁচাতে)
 async function compressImage(file) {
   let bmp;
@@ -159,8 +174,8 @@ async function compressImage(file) {
   return blob;
 }
 
-async function uploadPhoto(blob, path) {
-  const res = await fetch(SB.url + "/storage/v1/object/letter-photos/" + path, {
+async function uploadPhoto(blob, path, bucket) {
+  const res = await fetch(SB.url + "/storage/v1/object/" + (bucket || "letter-photos") + "/" + path, {
     method: "POST",
     headers: sbHeaders({ "Content-Type": "image/jpeg", "x-upsert": "false" }),
     body: blob
@@ -181,7 +196,7 @@ async function saveLetter(data, blobs, onProgress) {
       for (let i = 0; i < blobs.length; i++) {
         const path = folder + "/" + (i + 1) + ".jpg";
         if (onProgress) onProgress(i + 1, blobs.length);
-        await uploadPhoto(blobs[i], path);
+        await uploadPhoto(blobs[i], path, data.t === "desire" ? "letter-photos-private" : "letter-photos");
         photos.push(path);
       }
     }

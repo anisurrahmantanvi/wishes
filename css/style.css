@@ -308,3 +308,11 @@ body.t-desire .sfxbtn { display: block; }
 @media (prefers-reduced-motion: reduce) { body.t-desire .stage::after, #chr { animation: none; } }
 
 .chrname { text-align: center; margin-top: 4px; font-weight: 700; font-size: .95rem; color: #fff; text-shadow: 0 1px 8px rgba(0,0,0,.7), 0 0 14px var(--accent); }
+
+/* প্রাইভেট ছবি: ওয়াটারমার্ক, সেভ-নিরুৎসাহ, টাইমার */
+.slide[data-wm] { position: relative; }
+.slide[data-wm] img { -webkit-touch-callout: none; user-select: none; -webkit-user-drag: none; }
+.slide[data-wm]::after { content: attr(data-wm); position: absolute; right: 8px; bottom: 8px; color: rgba(255,255,255,.7); font-size: .75rem; font-weight: 700; text-shadow: 0 1px 4px rgba(0,0,0,.8); pointer-events: none; letter-spacing: .04em; }
+.ptimer { position: absolute; left: 0; right: 0; top: 10px; text-align: center; font-size: .8rem; opacity: .85; color: #fff; pointer-events: none; }
+.pnote { margin-top: 10px; font-size: .85rem; opacity: .85; text-align: center; color: #fff; }
+body.in-slides #chr { display: none; }
