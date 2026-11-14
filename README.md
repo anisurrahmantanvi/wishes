@@ -31,6 +31,9 @@ Project: `wishes` (Supabase)। `js/config.js`-এ project URL ও publishable k
 - **অ্যাডমিন:** আপত্তিকর letter সরাতে Supabase ড্যাশবোর্ডে `letters.removed = true` করুন। `letter_reports` ও `contact_messages` টেবিল ড্যাশবোর্ড থেকে দেখুন।
 - **খোলার সময় (unlock):** ডাটাবেসের letter-এ সময় আসার আগে `get_letter` শুধু নাম, টাইটেল ও সময় ফেরত দেয়, মেসেজ ও ছবির পাথ নয়। সময় পার হলে পাতা নিজে রিলোড হয়। (`#d=` লিংক মোডে এটা সম্পূর্ণ নিরাপদ নয়।)
 
+## Desktop site মোড (ফোনে)
+`js/fit.js` সব পাতার `<head>`-এ: ফোনে Chrome-এ "Desktop site" চালু থাকলে (screen ≤ ৬৪০px কিন্তু window ≥ ৭০০px) পুরো পাতাকে `zoom` দিয়ে ফোনের মাপে বড় করে, যাতে লেখা অতি ছোট না দেখায়। সাধারণ কম্পিউটারে কিছু বদলায় না। Playwright-এ screen মাপ নকল করে যাচাই হয়েছে, আসল ফোনে নয়।
+
 ## পাতা
 `index.html`, `create.html`, `view.html`, `about.html`, `contact.html` (ফর্ম → `send_contact`), `privacy.html`, `terms.html`, `blog/` (৫টা লেখা), `sitemap.xml`, `robots.txt`। `view.html` সার্চ ইঞ্জিনে ইনডেক্স হয় না। Terms/Privacy সাধারণ টেমপ্লেট, আইনি পরামর্শ নয়।
 
